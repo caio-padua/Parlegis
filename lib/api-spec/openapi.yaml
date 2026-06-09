@@ -3,13 +3,21 @@ info:
   # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: API specification for Gabinete Digital Cícero João
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: Public
+    description: Public portal endpoints (no auth)
+  - name: Citizen
+    description: Authenticated citizen endpoints
+  - name: Admin
+    description: Team / admin management endpoints
+  - name: Storage
+    description: Object storage upload and serving endpoints.
 paths:
   /healthz:
     get:
@@ -24,6 +32,860 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /me:
+    get:
+      tags: [Citizen]
+      operationId: getCurrentUser
+      summary: Get the current authenticated user (just-in-time provisioned)
+      responses:
+        "200":
+          description: Current user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CurrentUser"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+
+  /mandate-stats:
+    get:
+      tags: [Public]
+      operationId: getMandateStats
+      summary: Mandate in numbers (requerimentos, indicações, projetos de lei, etc.)
+      responses:
+        "200":
+          description: Mandate statistics
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MandateStats"
+    patch:
+      tags: [Admin]
+      operationId: updateMandateStats
+      summary: Update mandate statistics (admin)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MandateStatsInput"
+      responses:
+        "200":
+          description: Updated mandate statistics
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MandateStats"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+
+  /categories:
+    get:
+      tags: [Public]
+      operationId: listCategories
+      summary: List demand categories
+      responses:
+        "200":
+          description: Categories
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Category"
+
+  /neighborhoods:
+    get:
+      tags: [Public]
+      operationId: listNeighborhoods
+      summary: List neighborhoods (bairros)
+      responses:
+        "200":
+          description: Neighborhoods
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Neighborhood"
+
+  /stats/demands-by-neighborhood:
+    get:
+      tags: [Public]
+      operationId: getDemandsByNeighborhood
+      summary: Aggregate demand counts grouped by neighborhood
+      responses:
+        "200":
+          description: Counts by neighborhood
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/NeighborhoodCount"
+
+  /stats/demands-by-category:
+    get:
+      tags: [Public]
+      operationId: getDemandsByCategory
+      summary: Aggregate demand counts grouped by category
+      responses:
+        "200":
+          description: Counts by category
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/CategoryCount"
+
+  /track/{protocol}:
+    get:
+      tags: [Public]
+      operationId: trackDemand
+      summary: Track a demand publicly by its protocol number
+      parameters:
+        - name: protocol
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Demand tracking information
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DemandTracking"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+
+  /demands:
+    post:
+      tags: [Citizen]
+      operationId: createDemand
+      summary: Submit a new demand (citizen)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DemandInput"
+      responses:
+        "201":
+          description: Demand created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Demand"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+
+  /me/demands:
+    get:
+      tags: [Citizen]
+      operationId: listMyDemands
+      summary: List the current citizen's demands (history)
+      responses:
+        "200":
+          description: Demands
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Demand"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+
+  /demands/{id}:
+    get:
+      tags: [Citizen]
+      operationId: getDemand
+      summary: Get a single demand (owner or admin)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Demand
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Demand"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+
+  /demands/{id}/activities:
+    get:
+      tags: [Citizen]
+      operationId: listDemandActivities
+      summary: List the timeline/updates of a demand (owner or admin)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Activities
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/DemandActivity"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+
+  /admin/demands:
+    get:
+      tags: [Admin]
+      operationId: listDemands
+      summary: List and filter all demands (admin)
+      parameters:
+        - name: status
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: categoryId
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: neighborhoodId
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: q
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Demands
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Demand"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+
+  /admin/demands/{id}/activities:
+    post:
+      tags: [Admin]
+      operationId: createDemandActivity
+      summary: Add an update / change status of a demand (admin)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DemandActivityInput"
+      responses:
+        "201":
+          description: Activity created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DemandActivity"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+
+  /admin/dashboard:
+    get:
+      tags: [Admin]
+      operationId: getDashboardSummary
+      summary: Admin dashboard summary (counts, recent activity)
+      responses:
+        "200":
+          description: Dashboard summary
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DashboardSummary"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+
+  /projects:
+    get:
+      tags: [Public]
+      operationId: listProjects
+      summary: List projects and laws
+      parameters:
+        - name: type
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: status
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Projects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Project"
+    post:
+      tags: [Admin]
+      operationId: createProject
+      summary: Create a project / law (admin)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProjectInput"
+      responses:
+        "201":
+          description: Project created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Project"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+
+  /projects/{id}:
+    get:
+      tags: [Public]
+      operationId: getProject
+      summary: Get a single project / law
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Project
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Project"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+    patch:
+      tags: [Admin]
+      operationId: updateProject
+      summary: Update a project / law (admin)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProjectUpdate"
+      responses:
+        "200":
+          description: Project updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Project"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+    delete:
+      tags: [Admin]
+      operationId: deleteProject
+      summary: Delete a project / law (admin)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+
+  /news:
+    get:
+      tags: [Public]
+      operationId: listNews
+      summary: List news articles
+      responses:
+        "200":
+          description: News
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/NewsArticle"
+    post:
+      tags: [Admin]
+      operationId: createNewsArticle
+      summary: Create a news article (admin)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NewsArticleInput"
+      responses:
+        "201":
+          description: News article created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NewsArticle"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+
+  /news/{id}:
+    get:
+      tags: [Public]
+      operationId: getNewsArticle
+      summary: Get a single news article
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: News article
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NewsArticle"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+    patch:
+      tags: [Admin]
+      operationId: updateNewsArticle
+      summary: Update a news article (admin)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NewsArticleUpdate"
+      responses:
+        "200":
+          description: News article updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NewsArticle"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+    delete:
+      tags: [Admin]
+      operationId: deleteNewsArticle
+      summary: Delete a news article (admin)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+
+  /agenda:
+    get:
+      tags: [Public]
+      operationId: listAgenda
+      summary: List public agenda events
+      responses:
+        "200":
+          description: Agenda events
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/AgendaEvent"
+    post:
+      tags: [Admin]
+      operationId: createAgendaEvent
+      summary: Create an agenda event (admin)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AgendaEventInput"
+      responses:
+        "201":
+          description: Agenda event created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AgendaEvent"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+
+  /agenda/{id}:
+    patch:
+      tags: [Admin]
+      operationId: updateAgendaEvent
+      summary: Update an agenda event (admin)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AgendaEventUpdate"
+      responses:
+        "200":
+          description: Agenda event updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AgendaEvent"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+    delete:
+      tags: [Admin]
+      operationId: deleteAgendaEvent
+      summary: Delete an agenda event (admin)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+
+  /appointments:
+    post:
+      tags: [Citizen]
+      operationId: createAppointment
+      summary: Request an in-person service appointment (atendimento)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AppointmentInput"
+      responses:
+        "201":
+          description: Appointment requested
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Appointment"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+
+  /me/appointments:
+    get:
+      tags: [Citizen]
+      operationId: listMyAppointments
+      summary: List the current citizen's appointment requests
+      responses:
+        "200":
+          description: Appointments
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Appointment"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+
+  /admin/appointments:
+    get:
+      tags: [Admin]
+      operationId: listAppointments
+      summary: List all appointment requests (admin)
+      parameters:
+        - name: status
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Appointments
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Appointment"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+
+  /admin/appointments/{id}:
+    patch:
+      tags: [Admin]
+      operationId: updateAppointment
+      summary: Update an appointment (confirm/schedule/cancel) (admin)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AppointmentUpdate"
+      responses:
+        "200":
+          description: Appointment updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Appointment"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+
+  /storage/uploads/request-url:
+    post:
+      tags: [Storage]
+      operationId: requestUploadUrl
+      summary: Request a presigned URL for file upload
+      description: |
+        Returns a presigned GCS URL for direct upload. The client sends JSON
+        metadata here, then uploads the file directly to the returned URL.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UploadUrlRequest"
+      responses:
+        "200":
+          description: Presigned upload URL generated.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UploadUrlResponse"
+        "400":
+          description: Missing or invalid required fields.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "500":
+          description: Failed to generate upload URL.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+  /storage/public-objects/{filePath}:
+    get:
+      tags: [Storage]
+      operationId: getPublicObject
+      summary: Serve a public asset from PUBLIC_OBJECT_SEARCH_PATHS
+      parameters:
+        - name: filePath
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Relative file path within the public search paths.
+      responses:
+        "200":
+          description: Object content streamed with correct Content-Type.
+          content:
+            "*/*":
+              schema:
+                type: string
+                format: binary
+        "404":
+          description: File not found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "500":
+          description: Failed to serve public object.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+  /storage/objects/{objectPath}:
+    get:
+      tags: [Storage]
+      operationId: getStorageObject
+      summary: Serve an object entity from PRIVATE_OBJECT_DIR
+      parameters:
+        - name: objectPath
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Object path within the private object dir (e.g. `uploads/some-uuid`).
+      responses:
+        "200":
+          description: Object content streamed with correct Content-Type.
+          content:
+            "*/*":
+              schema:
+                type: string
+                format: binary
+        "404":
+          description: Object not found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "500":
+          description: Failed to serve object.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+
 components:
   schemas:
     HealthStatus:
@@ -34,3 +896,539 @@ components:
       required:
         - status
 
+    ErrorEnvelope:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: string
+
+    CurrentUser:
+      type: object
+      required: [id, role]
+      properties:
+        id:
+          type: integer
+        clerkUserId:
+          type: string
+        name:
+          type: ["string", "null"]
+        email:
+          type: ["string", "null"]
+        role:
+          type: string
+          description: "citizen or admin"
+
+    MandateStats:
+      type: object
+      required:
+        - requerimentos
+        - indicacoes
+        - projetosLei
+        - leisAprovadas
+        - emendas
+        - atendimentos
+      properties:
+        requerimentos:
+          type: integer
+        indicacoes:
+          type: integer
+        projetosLei:
+          type: integer
+        leisAprovadas:
+          type: integer
+        emendas:
+          type: integer
+        atendimentos:
+          type: integer
+        updatedAt:
+          type: ["string", "null"]
+          format: date-time
+
+    MandateStatsInput:
+      type: object
+      properties:
+        requerimentos:
+          type: integer
+        indicacoes:
+          type: integer
+        projetosLei:
+          type: integer
+        leisAprovadas:
+          type: integer
+        emendas:
+          type: integer
+        atendimentos:
+          type: integer
+
+    Category:
+      type: object
+      required: [id, slug, name]
+      properties:
+        id:
+          type: integer
+        slug:
+          type: string
+        name:
+          type: string
+        icon:
+          type: ["string", "null"]
+          description: lucide-react icon name
+
+    Neighborhood:
+      type: object
+      required: [id, name]
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        region:
+          type: ["string", "null"]
+
+    NeighborhoodCount:
+      type: object
+      required: [neighborhoodId, name, count]
+      properties:
+        neighborhoodId:
+          type: integer
+        name:
+          type: string
+        region:
+          type: ["string", "null"]
+        count:
+          type: integer
+
+    CategoryCount:
+      type: object
+      required: [categoryId, name, slug, count]
+      properties:
+        categoryId:
+          type: integer
+        name:
+          type: string
+        slug:
+          type: string
+        icon:
+          type: ["string", "null"]
+        count:
+          type: integer
+
+    Demand:
+      type: object
+      required:
+        - id
+        - protocol
+        - title
+        - description
+        - status
+        - citizenName
+        - createdAt
+      properties:
+        id:
+          type: integer
+        protocol:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        status:
+          type: string
+          description: "recebida | em_analise | encaminhada | aguardando_resposta | em_acompanhamento | resolvida | arquivada"
+        categoryId:
+          type: ["integer", "null"]
+        categoryName:
+          type: ["string", "null"]
+        neighborhoodId:
+          type: ["integer", "null"]
+        neighborhoodName:
+          type: ["string", "null"]
+        photoUrl:
+          type: ["string", "null"]
+        citizenName:
+          type: string
+        citizenEmail:
+          type: ["string", "null"]
+        citizenPhone:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: ["string", "null"]
+          format: date-time
+
+    DemandInput:
+      type: object
+      required: [title, description, citizenName]
+      properties:
+        title:
+          type: string
+          minLength: 1
+        description:
+          type: string
+          minLength: 1
+        categoryId:
+          type: integer
+        neighborhoodId:
+          type: integer
+        photoUrl:
+          type: string
+        citizenName:
+          type: string
+          minLength: 1
+        citizenEmail:
+          type: string
+        citizenPhone:
+          type: string
+
+    DemandActivity:
+      type: object
+      required: [id, demandId, note, createdAt]
+      properties:
+        id:
+          type: integer
+        demandId:
+          type: integer
+        status:
+          type: ["string", "null"]
+        note:
+          type: string
+        authorName:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+          format: date-time
+
+    DemandActivityInput:
+      type: object
+      required: [note]
+      properties:
+        status:
+          type: string
+        note:
+          type: string
+          minLength: 1
+
+    DemandTracking:
+      type: object
+      required: [protocol, title, status, createdAt, activities]
+      properties:
+        protocol:
+          type: string
+        title:
+          type: string
+        status:
+          type: string
+        categoryName:
+          type: ["string", "null"]
+        neighborhoodName:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+          format: date-time
+        activities:
+          type: array
+          items:
+            $ref: "#/components/schemas/DemandActivity"
+
+    Project:
+      type: object
+      required: [id, title, summary, type, status]
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        summary:
+          type: string
+        theme:
+          type: ["string", "null"]
+        type:
+          type: string
+          description: "projeto_lei | requerimento | indicacao | emenda | lei"
+        status:
+          type: string
+          description: "protocolado | em_tramitacao | aprovado | sancionado | arquivado"
+        year:
+          type: ["integer", "null"]
+        documentUrl:
+          type: ["string", "null"]
+        createdAt:
+          type: ["string", "null"]
+          format: date-time
+
+    ProjectInput:
+      type: object
+      required: [title, summary, type, status]
+      properties:
+        title:
+          type: string
+          minLength: 1
+        summary:
+          type: string
+          minLength: 1
+        theme:
+          type: string
+        type:
+          type: string
+        status:
+          type: string
+        year:
+          type: integer
+        documentUrl:
+          type: string
+
+    ProjectUpdate:
+      type: object
+      properties:
+        title:
+          type: string
+          minLength: 1
+        summary:
+          type: string
+          minLength: 1
+        theme:
+          type: string
+        type:
+          type: string
+        status:
+          type: string
+        year:
+          type: integer
+        documentUrl:
+          type: string
+
+    NewsArticle:
+      type: object
+      required: [id, title, summary, body, publishedAt]
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        summary:
+          type: string
+        body:
+          type: string
+        imageUrl:
+          type: ["string", "null"]
+        publishedAt:
+          type: string
+          format: date-time
+
+    NewsArticleInput:
+      type: object
+      required: [title, summary, body]
+      properties:
+        title:
+          type: string
+          minLength: 1
+        summary:
+          type: string
+          minLength: 1
+        body:
+          type: string
+          minLength: 1
+        imageUrl:
+          type: string
+        publishedAt:
+          type: string
+          format: date-time
+
+    NewsArticleUpdate:
+      type: object
+      properties:
+        title:
+          type: string
+          minLength: 1
+        summary:
+          type: string
+          minLength: 1
+        body:
+          type: string
+          minLength: 1
+        imageUrl:
+          type: string
+        publishedAt:
+          type: string
+          format: date-time
+
+    AgendaEvent:
+      type: object
+      required: [id, title, type, startsAt]
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        description:
+          type: ["string", "null"]
+        location:
+          type: ["string", "null"]
+        type:
+          type: string
+          description: "visita | reuniao | audiencia | sessao | outro"
+        startsAt:
+          type: string
+          format: date-time
+
+    AgendaEventInput:
+      type: object
+      required: [title, type, startsAt]
+      properties:
+        title:
+          type: string
+          minLength: 1
+        description:
+          type: string
+        location:
+          type: string
+        type:
+          type: string
+        startsAt:
+          type: string
+          format: date-time
+
+    AgendaEventUpdate:
+      type: object
+      properties:
+        title:
+          type: string
+          minLength: 1
+        description:
+          type: string
+        location:
+          type: string
+        type:
+          type: string
+        startsAt:
+          type: string
+          format: date-time
+
+    Appointment:
+      type: object
+      required: [id, protocol, subject, status, citizenName, createdAt]
+      properties:
+        id:
+          type: integer
+        protocol:
+          type: string
+        subject:
+          type: string
+        description:
+          type: ["string", "null"]
+        preferredDate:
+          type: ["string", "null"]
+          format: date
+        status:
+          type: string
+          description: "solicitado | confirmado | realizado | cancelado"
+        scheduledAt:
+          type: ["string", "null"]
+          format: date-time
+        citizenName:
+          type: string
+        citizenEmail:
+          type: ["string", "null"]
+        citizenPhone:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+          format: date-time
+
+    AppointmentInput:
+      type: object
+      required: [subject, citizenName]
+      properties:
+        subject:
+          type: string
+          minLength: 1
+        description:
+          type: string
+        preferredDate:
+          type: string
+          format: date
+        citizenName:
+          type: string
+          minLength: 1
+        citizenEmail:
+          type: string
+        citizenPhone:
+          type: string
+
+    AppointmentUpdate:
+      type: object
+      properties:
+        status:
+          type: string
+        scheduledAt:
+          type: string
+          format: date-time
+
+    DashboardSummary:
+      type: object
+      required:
+        - totalDemands
+        - resolvedDemands
+        - openDemands
+        - pendingAppointments
+        - byStatus
+        - recentDemands
+      properties:
+        totalDemands:
+          type: integer
+        resolvedDemands:
+          type: integer
+        openDemands:
+          type: integer
+        pendingAppointments:
+          type: integer
+        byStatus:
+          type: array
+          items:
+            $ref: "#/components/schemas/StatusCount"
+        recentDemands:
+          type: array
+          items:
+            $ref: "#/components/schemas/Demand"
+
+    StatusCount:
+      type: object
+      required: [status, count]
+      properties:
+        status:
+          type: string
+        count:
+          type: integer
+
+    UploadUrlRequest:
+      type: object
+      required: [name, size, contentType]
+      properties:
+        name:
+          type: string
+          minLength: 1
+          description: Original file name.
+        size:
+          type: integer
+          minimum: 1
+          description: File size in bytes.
+        contentType:
+          type: string
+          minLength: 1
+          description: MIME type of the file (e.g. `image/jpeg`).
+    UploadUrlResponse:
+      type: object
+      required: [uploadURL, objectPath]
+      properties:
+        uploadURL:
+          type: string
+          format: uri
+          description: Presigned GCS URL for PUT upload.
+        objectPath:
+          type: string
+          description: Normalized object path (e.g. `/objects/uploads/uuid`).
+        metadata:
+          $ref: "#/components/schemas/UploadUrlRequest"

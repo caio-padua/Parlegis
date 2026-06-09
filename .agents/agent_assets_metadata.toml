@@ -1,0 +1,38 @@
+uploads = []
+outputs = []
+
+[[generated]]
+id = "GjLJtdgmkmtbjlFkJttz0"
+uri = "file://artifacts/gabinete-digital/public/seed/news-iluminacao.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "5zumOVpXmbJJe6-XKRE21"
+uri = "file://artifacts/gabinete-digital/public/seed/news-saude.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "tLUx0pk-kYyjYQIsNAwBR"
+uri = "file://artifacts/gabinete-digital/public/seed/news-obras.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "G6L3A9vrj9nqRIqkf9SqA"
+uri = "file://artifacts/gabinete-digital/public/seed/demand-buraco.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "M-JIqSSnMqTtk0CQ4XyIM"
+uri = "file://artifacts/gabinete-digital/public/seed/demand-praca.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "5nwFRXitll5vsWO0dHxSz"
+uri = "file://artifacts/gabinete-digital/public/seed/civic-sorocaba.png"
+type = "image"
+title = "generated_image"

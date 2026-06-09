@@ -1,0 +1,442 @@
+Dr. Caio, para o site do Cícero João, eu não faria um site “de campanha”. Eu faria um **Portal Institucional de Mandato + Gabinete Digital**, com aparência premium, mas linguagem popular, clara e acessível.
+
+A identidade visual pode seguir o PSB, mas sem ficar com cara de panfleto eleitoral.
+
+## 1. O que encontrei sobre a identidade do PSB
+
+O PSB tem como cores institucionais oficiais o **amarelo** e o **vermelho**. No manual de identidade visual, as cores padrão aparecem em CMYK como **Yellow: C0 M0 Y100 K0** e **Red: C0 M100 Y100 K0**. Isso, na prática digital, corresponde ao amarelo e vermelho muito vivos. ([PSB 40][1])
+
+O estatuto do partido também registra que a bandeira do PSB tem **duas faixas horizontais nas cores amarela e vermelha**, e que o símbolo do partido é a **pomba da paz de Picasso**, voando para a esquerda. O lema oficial é **“Socialismo e Liberdade”**. 
+
+A própria comunicação do PSB reforça que a logomarca de autorreforma usa as cores **amarelo e vermelho** e faz referência à **pomba da paz**, um dos principais símbolos do partido. ([PSB 40][2])
+
+Então, a leitura visual correta é:
+
+**vermelho + amarelo + branco + pomba + ideia de movimento social/institucional.**
+
+O ponto importante: no site do Cícero, não usar o vermelho e amarelo puros como cores dominantes. Eles são muito fortes, populares e partidários, mas podem deixar o site com aspecto de campanha de rua. Para um site sofisticado, o ideal é usar versões **mais fechadas, nobres e digitais** dessas cores.
+
+---
+
+# 2. Paleta principal recomendada
+
+## Paleta “PSB Institucional Premium”
+
+| Função                          |                         Cor |       HEX | Uso                                                       |
+| ------------------------------- | --------------------------: | --------: | --------------------------------------------------------- |
+| Vermelho institucional profundo |           Bordô republicano | `#8B1E2D` | Botões principais, títulos fortes, detalhes de autoridade |
+| Vermelho PSB suavizado          |     Vermelho social fechado | `#B3262E` | Destaques, links importantes, alertas elegantes           |
+| Ouro velho                      | Dourado popular sofisticado | `#C99A2E` | Linhas, ícones, detalhes premium                          |
+| Champagne                       |        Amarelo PSB refinado | `#E7C873` | Fundos leves, cards especiais, hover                      |
+| Creme social                    |             Fundo principal | `#F8F3E8` | Fundo do site, leitura confortável                        |
+| Branco quente                   |                  Área limpa | `#FFFDF8` | Cards, formulários, blocos de texto                       |
+| Grafite                         |             Texto principal | `#242424` | Texto comum                                               |
+| Azul petróleo institucional     |           Cor de equilíbrio | `#102D3C` | Rodapé, menu, área administrativa, contraste              |
+
+Essa paleta mantém o DNA do PSB, mas transforma a imagem em algo mais **clássico, institucional e confiável**.
+
+---
+
+# 3. Como aplicar no site
+
+## Fundo
+
+Eu usaria fundo **creme/off-white**, não branco puro.
+
+Exemplo:
+
+`#F8F3E8`
+
+Isso deixa o site mais humano, quente e acessível. O branco puro pode parecer frio demais.
+
+## Botões
+
+Botão principal:
+
+**bordô com texto branco**
+
+```css
+background: #8B1E2D;
+color: #FFFDF8;
+```
+
+Hover:
+
+```css
+background: #6F1623;
+```
+
+Botão secundário:
+
+**champagne com texto grafite**
+
+```css
+background: #E7C873;
+color: #242424;
+```
+
+## Detalhes premium
+
+Linhas finas, divisórias, ícones e molduras:
+
+```css
+color: #C99A2E;
+border-color: #C99A2E;
+```
+
+## Cabeçalho
+
+Eu faria o menu em **azul petróleo institucional** ou **bordô profundo**.
+
+Mais elegante:
+
+```css
+background: #102D3C;
+```
+
+Com detalhes em dourado:
+
+```css
+border-bottom: 1px solid #C99A2E;
+```
+
+---
+
+# 4. Tipografia ideal
+
+O manual oficial antigo do PSB cita a família **Humanst521 BT** como alfabeto padrão para manifestações visuais permanentes. ([PSB 40][1])
+Para web moderna, eu usaria fontes equivalentes, mais acessíveis e fáceis de carregar.
+
+## Títulos
+
+Use uma fonte serifada elegante:
+
+**Playfair Display**
+ou
+**Libre Baskerville**
+
+Elas passam:
+
+* tradição;
+* autoridade;
+* respeito;
+* institucionalidade.
+
+## Texto comum
+
+Use fonte limpa:
+
+**Inter**
+ou
+**Source Sans 3**
+
+Elas passam:
+
+* clareza;
+* modernidade;
+* leitura fácil no celular.
+
+## Combinação recomendada
+
+**Títulos:** Playfair Display
+**Textos e botões:** Inter
+
+---
+
+# 5. Tipo de site recomendado
+
+Eu não faria apenas uma landing page simples.
+
+Para ele, o melhor seria:
+
+# **Portal de Mandato + Gabinete Digital**
+
+Estrutura:
+
+1. **Home institucional**
+2. **Biografia**
+3. **Mandato em números**
+4. **Projetos e leis**
+5. **Demandas por bairro**
+6. **Agenda pública**
+7. **Enviar solicitação**
+8. **Agendar atendimento**
+9. **Acompanhar protocolo**
+10. **Notícias**
+11. **Área do cidadão**
+12. **Painel da equipe**
+
+A home pode funcionar como landing page, mas o site inteiro precisa ser um sistema.
+
+---
+
+# 6. Conceito visual do site
+
+Eu usaria este conceito:
+
+## **“Gabinete Digital de Sorocaba”**
+
+Com subtítulo:
+
+**Atendimento, presença nos bairros e transparência em um só lugar.**
+
+Isso aproxima o cidadão sem parecer propaganda agressiva.
+
+O site deve parecer:
+
+* acessível;
+* sério;
+* bonito;
+* fácil de usar no celular;
+* institucional;
+* próximo da população;
+* confiável para lideranças, comerciantes, entidades e moradores.
+
+---
+
+# 7. Página inicial ideal
+
+## Bloco 1 - Hero
+
+Foto dele bem produzida.
+
+Texto:
+
+**Cícero João**
+**Vereador por Sorocaba**
+
+Frase:
+
+**Um mandato próximo, organizado e aberto para ouvir a população.**
+
+Botões:
+
+**Enviar uma demanda**
+**Agendar atendimento**
+**Conhecer projetos**
+
+## Bloco 2 - Cards rápidos
+
+Cards com ícones:
+
+* Saúde
+* Segurança
+* Acessibilidade
+* Zeladoria
+* Trânsito
+* Bairros
+* Comércio local
+* Educação
+
+## Bloco 3 - Mandato em números
+
+Aqui entram dados oficiais de produção parlamentar, quando confirmados na fonte da Câmara.
+
+Exemplo visual:
+
+**1.039** requerimentos
+**306** indicações
+**51** projetos de lei
+**12** leis ordinárias
+**111** emendas
+
+## Bloco 4 - Gabinete Digital
+
+Texto simples:
+
+**Agora você pode enviar sua solicitação, acompanhar o andamento e falar com a equipe pelo site.**
+
+Botão:
+
+**Acessar área do cidadão**
+
+## Bloco 5 - Sorocaba por bairros
+
+Mapa ou lista:
+
+* Centro
+* Zona Norte
+* Zona Leste
+* Éden
+* Ipanema
+* Aparecidinha
+* Brigadeiro Tobias
+* Cajuru
+* Wanel Ville
+* Vila Haro
+* Além Ponte
+
+## Bloco 6 - Projetos e leis
+
+Cards com:
+
+* título;
+* tema;
+* resumo simples;
+* status;
+* link para documento oficial.
+
+## Bloco 7 - Notícias e agenda
+
+* visitas;
+* reuniões;
+* audiências;
+* projetos protocolados;
+* resultados obtidos.
+
+---
+
+# 8. Área do cidadão
+
+Essa é a parte mais importante.
+
+O cidadão deve conseguir:
+
+* criar login;
+* enviar demanda;
+* anexar foto;
+* escolher bairro;
+* escolher categoria;
+* acompanhar status;
+* receber atualização;
+* solicitar reunião;
+* consultar histórico.
+
+Categorias:
+
+* Saúde
+* Segurança
+* Acessibilidade
+* Iluminação
+* Buracos/asfalto
+* Trânsito
+* Transporte
+* Escola
+* Animais
+* Comércio
+* Limpeza urbana
+* Outros
+
+Status:
+
+* Recebida
+* Em análise
+* Encaminhada
+* Aguardando resposta
+* Em acompanhamento
+* Resolvida
+* Arquivada
+
+---
+
+# 9. Estilo visual popular, mas elegante
+
+Para o cidadão se identificar, o site não pode parecer “luxo distante”. Precisa ser **sofisticado, mas humano**.
+
+Eu evitaria:
+
+* preto excessivo;
+* dourado demais;
+* fotos muito posadas;
+* linguagem difícil;
+* excesso de brasões;
+* visual de escritório elitizado.
+
+Eu usaria:
+
+* fundo claro;
+* fotos em bairros;
+* imagens com pessoas reais;
+* frases curtas;
+* botões grandes;
+* ícones simples;
+* cards objetivos;
+* linguagem de serviço público.
+
+A estética correta seria:
+
+**clássico institucional + popular organizado + digital moderno.**
+
+---
+
+# 10. CSS base para o Replit
+
+```css
+:root {
+  --psb-bordo: #8B1E2D;
+  --psb-vermelho-fechado: #B3262E;
+  --psb-ouro-velho: #C99A2E;
+  --psb-champagne: #E7C873;
+  --psb-creme: #F8F3E8;
+  --psb-branco-quente: #FFFDF8;
+  --psb-grafite: #242424;
+  --psb-azul-petroleo: #102D3C;
+}
+
+body {
+  background: var(--psb-creme);
+  color: var(--psb-grafite);
+  font-family: 'Inter', sans-serif;
+}
+
+h1, h2, h3 {
+  font-family: 'Playfair Display', serif;
+  color: var(--psb-bordo);
+}
+
+.btn-primary {
+  background: var(--psb-bordo);
+  color: var(--psb-branco-quente);
+  border-radius: 999px;
+  padding: 14px 28px;
+  font-weight: 700;
+}
+
+.btn-primary:hover {
+  background: #6F1623;
+}
+
+.btn-secondary {
+  background: var(--psb-champagne);
+  color: var(--psb-grafite);
+  border-radius: 999px;
+  padding: 14px 28px;
+  font-weight: 700;
+}
+
+.card-premium {
+  background: var(--psb-branco-quente);
+  border: 1px solid rgba(201, 154, 46, 0.35);
+  border-radius: 22px;
+  box-shadow: 0 18px 45px rgba(16, 45, 60, 0.08);
+}
+```
+
+---
+
+# 11. Minha sugestão final de identidade
+
+## Nome do projeto
+
+**Gabinete Digital Cícero João**
+
+## Assinatura
+
+**Sorocaba ouvida. Demandas organizadas. Trabalho acompanhado.**
+
+## Paleta
+
+**Bordô + Champagne + Creme + Grafite + Azul Petróleo**
+
+## Tipo de site
+
+**Portal institucional com área do cidadão, CRM de demandas e agenda integrada.**
+
+## Estética
+
+**Clássica, popular, acessível e institucional.**
+
+Essa solução respeita a origem visual do PSB, mas eleva o site para um padrão mais moderno e profissional.
+
+[1]: https://psb40.org.br/wp-content/uploads/2016/09/MANUAL-DE-IDENTIDADE_PSB-1.pdf "manual PSB.qxp"
+[2]: https://psb40.org.br/psb-lanca-logomarca-oficial-da-autorreforma-brasil-um-passo-adiante/ "PSB lança logomarca oficial da autorreforma: Brasil, um passo adiante - PSB 40"

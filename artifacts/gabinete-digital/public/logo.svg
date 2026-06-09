@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 120" fill="none">
+  <rect width="400" height="120" fill="transparent" />
+  <!-- Icon / Monogram -->
+  <circle cx="60" cy="60" r="40" fill="#8B1E2D" />
+  <text x="60" y="75" font-family="Playfair Display, serif" font-size="42" font-weight="700" fill="#FFFDF8" text-anchor="middle">CJ</text>
+  <!-- Text -->
+  <text x="120" y="55" font-family="Playfair Display, serif" font-size="32" font-weight="700" fill="#8B1E2D">Cícero João</text>
+  <text x="122" y="85" font-family="Inter, sans-serif" font-size="16" font-weight="500" fill="#102D3C" letter-spacing="2">GABINETE DIGITAL</text>
+</svg>

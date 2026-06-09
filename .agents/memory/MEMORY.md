@@ -1,0 +1,2 @@
+- [Clerk @clerk/react + Orval hooks](clerk-react-and-orval-hooks.md) — @clerk/react uses `Show` not SignedIn/SignedOut; generated query hooks require `queryKey`, filtered list hooks take params as 1st arg.
+- [First-admin bootstrap race](jit-user-first-admin-bootstrap.md) — make "first user = admin" atomic with a pg advisory-lock transaction + onConflictDoNothing.
