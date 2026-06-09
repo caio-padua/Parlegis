@@ -12,8 +12,9 @@ import {
   UpdateAppointmentResponse,
 } from "@workspace/api-zod";
 import { db, appointmentsTable } from "@workspace/db";
-import { requireAuth, requireAdmin } from "../middlewares/auth";
+import { requireAuth, requirePermission } from "../middlewares/auth";
 import { makeProtocol } from "../lib/queries";
+import { reserveSlotSeat, maybeReleaseNext } from "./slots";
 
 const router: IRouter = Router();
 
@@ -24,7 +25,22 @@ router.post("/appointments", requireAuth, async (req, res): Promise<void> => {
     return;
   }
   const { userId } = getAuth(req);
-  const { preferredDate, ...rest } = parsed.data;
+  const { preferredDate, slotId, ...rest } = parsed.data;
+
+  let reservedDate: string | undefined;
+  if (slotId !== undefined) {
+    const seat = await reserveSlotSeat(slotId);
+    if (!seat) {
+      res
+        .status(409)
+        .json({ error: "Este horário não está mais disponível. Escolha outro." });
+      return;
+    }
+    reservedDate = seat.date;
+    await maybeReleaseNext(seat);
+  }
+
+  const effectiveDate = reservedDate ?? preferredDate;
   const [created] = await db
     .insert(appointmentsTable)
     .values({
@@ -32,8 +48,9 @@ router.post("/appointments", requireAuth, async (req, res): Promise<void> => {
       protocol: makeProtocol("ATD"),
       status: "solicitado",
       citizenClerkUserId: userId ?? null,
-      ...(preferredDate
-        ? { preferredDate: new Date(preferredDate).toISOString().slice(0, 10) }
+      ...(slotId !== undefined ? { slotId } : {}),
+      ...(effectiveDate
+        ? { preferredDate: new Date(effectiveDate).toISOString().slice(0, 10) }
         : {}),
     })
     .returning();
@@ -52,7 +69,7 @@ router.get("/me/appointments", requireAuth, async (req, res): Promise<void> => {
 
 router.get(
   "/admin/appointments",
-  requireAdmin,
+  requirePermission("canManageAppointments"),
   async (req, res): Promise<void> => {
     const parsed = ListAppointmentsQueryParams.safeParse(req.query);
     if (!parsed.success) {
@@ -73,7 +90,7 @@ router.get(
 
 router.patch(
   "/admin/appointments/:id",
-  requireAdmin,
+  requirePermission("canManageAppointments"),
   async (req, res): Promise<void> => {
     const params = UpdateAppointmentParams.safeParse(req.params);
     if (!params.success) {

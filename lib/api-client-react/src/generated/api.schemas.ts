@@ -13,15 +13,73 @@ export interface ErrorEnvelope {
   error: string;
 }
 
+/**
+ * Capability toggles for gabinete staff
+ */
+export interface Permissions {
+  canManageDemands?: boolean;
+  canRespondDemands?: boolean;
+  canManageProjects?: boolean;
+  canManageNews?: boolean;
+  canManageAgenda?: boolean;
+  canManageAppointments?: boolean;
+  canReleaseScheduleCards?: boolean;
+  canManageStats?: boolean;
+  canManageVoters?: boolean;
+  canMessageVoters?: boolean;
+  canManageGifts?: boolean;
+  canManageTeam?: boolean;
+}
+
 export interface CurrentUser {
   id: number;
-  clerkUserId?: string;
+  /** @nullable */
+  clerkUserId?: string | null;
   /** @nullable */
   name?: string | null;
   /** @nullable */
   email?: string | null;
-  /** citizen or admin */
+  /** citizen, staff or admin */
   role: string;
+  /**
+     * staff title (vereador, chefe_gabinete, assessor_*, atendimento)
+     * @nullable
+     */
+  cargo?: string | null;
+  permissions: Permissions;
+  active: boolean;
+}
+
+export interface TeamMember {
+  id: number;
+  /** @nullable */
+  clerkUserId?: string | null;
+  /** @nullable */
+  name?: string | null;
+  /** @nullable */
+  email?: string | null;
+  role: string;
+  /** @nullable */
+  cargo?: string | null;
+  permissions: Permissions;
+  active: boolean;
+  createdAt: string;
+}
+
+export interface TeamMemberInput {
+  email: string;
+  /** @nullable */
+  name?: string | null;
+  cargo: string;
+  permissions?: Permissions;
+}
+
+export interface TeamMemberUpdate {
+  /** @nullable */
+  name?: string | null;
+  cargo?: string;
+  permissions?: Permissions;
+  active?: boolean;
 }
 
 export interface MandateStats {
@@ -277,6 +335,7 @@ export interface AppointmentInput {
   /** @minLength 1 */
   subject: string;
   description?: string;
+  slotId?: number;
   preferredDate?: string;
   /** @minLength 1 */
   citizenName: string;
@@ -287,6 +346,214 @@ export interface AppointmentInput {
 export interface AppointmentUpdate {
   status?: string;
   scheduledAt?: string;
+}
+
+export interface AppointmentSlot {
+  id: number;
+  date: string;
+  /** manha | tarde */
+  period: string;
+  capacity: number;
+  bookedCount: number;
+  released: boolean;
+  /** remaining capacity (capacity - bookedCount) */
+  available: number;
+  /** @nullable */
+  note?: string | null;
+  createdAt: string;
+}
+
+export interface AppointmentSlotInput {
+  date: string;
+  period: string;
+  capacity?: number;
+  released?: boolean;
+  /** @nullable */
+  note?: string | null;
+}
+
+export interface AppointmentSlotUpdate {
+  capacity?: number;
+  released?: boolean;
+  /** @nullable */
+  note?: string | null;
+}
+
+export interface Voter {
+  id: number;
+  name: string;
+  /** @nullable */
+  whatsapp?: string | null;
+  /** @nullable */
+  email?: string | null;
+  /** @nullable */
+  birthDate?: string | null;
+  /** @nullable */
+  address?: string | null;
+  /** @nullable */
+  neighborhood?: string | null;
+  /** @nullable */
+  notes?: string | null;
+  createdAt: string;
+}
+
+export interface VoterInput {
+  /** @minLength 1 */
+  name: string;
+  /** @nullable */
+  whatsapp?: string | null;
+  /** @nullable */
+  email?: string | null;
+  /** @nullable */
+  birthDate?: string | null;
+  /** @nullable */
+  address?: string | null;
+  /** @nullable */
+  neighborhood?: string | null;
+  /** @nullable */
+  notes?: string | null;
+}
+
+export interface BirthdayVoter {
+  id: number;
+  name: string;
+  /** @nullable */
+  whatsapp?: string | null;
+  /** @nullable */
+  birthDate?: string | null;
+  /** @nullable */
+  neighborhood?: string | null;
+  daysUntil: number;
+}
+
+export interface Message {
+  id: number;
+  /** @nullable */
+  voterId?: number | null;
+  recipientName: string;
+  /** @nullable */
+  recipientContact?: string | null;
+  channel: string;
+  kind: string;
+  body: string;
+  status: string;
+  /** @nullable */
+  relatedDemandId?: number | null;
+  /** @nullable */
+  error?: string | null;
+  createdAt: string;
+  /** @nullable */
+  sentAt?: string | null;
+}
+
+export interface MessageInput {
+  /** @nullable */
+  voterId?: number | null;
+  /** @minLength 1 */
+  recipientName: string;
+  /** @nullable */
+  recipientContact?: string | null;
+  channel?: string;
+  kind?: string;
+  /** @minLength 1 */
+  body: string;
+  /** @nullable */
+  relatedDemandId?: number | null;
+}
+
+export interface Gift {
+  id: number;
+  voterId: number;
+  description: string;
+  /** casa | gabinete */
+  deliveryType: string;
+  /** @nullable */
+  occasion?: string | null;
+  /** pendente | preparando | entregue | cancelado */
+  status: string;
+  /** @nullable */
+  scheduledFor?: string | null;
+  /** @nullable */
+  notes?: string | null;
+  createdAt: string;
+  /** @nullable */
+  deliveredAt?: string | null;
+}
+
+export interface GiftInput {
+  voterId: number;
+  /** @minLength 1 */
+  description: string;
+  deliveryType?: string;
+  /** @nullable */
+  occasion?: string | null;
+  /** @nullable */
+  scheduledFor?: string | null;
+  /** @nullable */
+  notes?: string | null;
+}
+
+export interface GiftUpdate {
+  status?: string;
+  deliveryType?: string;
+  /** @nullable */
+  scheduledFor?: string | null;
+  /** @nullable */
+  notes?: string | null;
+}
+
+export interface MessageTemplate {
+  id: number;
+  name: string;
+  kind: string;
+  body: string;
+  createdAt: string;
+}
+
+export interface MessageTemplateInput {
+  /** @minLength 1 */
+  name: string;
+  kind?: string;
+  /** @minLength 1 */
+  body: string;
+}
+
+export interface IntegrationStatus {
+  provider: string;
+  configured: boolean;
+  missing: string[];
+}
+
+export interface VoiceRequest {
+  /** @minLength 1 */
+  text: string;
+  /** @nullable */
+  voiceId?: string | null;
+}
+
+export interface VoiceResponse {
+  ok: boolean;
+  /** @nullable */
+  audioBase64?: string | null;
+  /** @nullable */
+  contentType?: string | null;
+  /** @nullable */
+  error?: string | null;
+}
+
+export interface VideoRequest {
+  /** @minLength 1 */
+  script: string;
+  /** @nullable */
+  avatarId?: string | null;
+}
+
+export interface VideoResponse {
+  ok: boolean;
+  /** @nullable */
+  videoId?: string | null;
+  /** @nullable */
+  error?: string | null;
 }
 
 export interface StatusCount {
@@ -339,6 +606,14 @@ q?: string;
 export type ListProjectsParams = {
 type?: string;
 status?: string;
+};
+
+export type ListVotersParams = {
+search?: string;
+};
+
+export type ListBirthdaysParams = {
+days?: number;
 };
 
 export type ListAppointmentsParams = {

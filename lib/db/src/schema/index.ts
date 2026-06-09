@@ -8,3 +8,5 @@ export * from "./projects";
 export * from "./news";
 export * from "./agenda";
 export * from "./appointments";
+export * from "./appointmentSlots";
+export * from "./crm";

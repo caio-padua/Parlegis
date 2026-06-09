@@ -22,10 +22,26 @@ export const HealthCheckResponse = zod.object({
  */
 export const GetCurrentUserResponse = zod.object({
   "id": zod.number(),
-  "clerkUserId": zod.string().optional(),
+  "clerkUserId": zod.string().nullish(),
   "name": zod.string().nullish(),
   "email": zod.string().nullish(),
-  "role": zod.string().describe('citizen or admin')
+  "role": zod.string().describe('citizen, staff or admin'),
+  "cargo": zod.string().nullish().describe('staff title (vereador, chefe_gabinete, assessor_\*, atendimento)'),
+  "permissions": zod.object({
+  "canManageDemands": zod.boolean().optional(),
+  "canRespondDemands": zod.boolean().optional(),
+  "canManageProjects": zod.boolean().optional(),
+  "canManageNews": zod.boolean().optional(),
+  "canManageAgenda": zod.boolean().optional(),
+  "canManageAppointments": zod.boolean().optional(),
+  "canReleaseScheduleCards": zod.boolean().optional(),
+  "canManageStats": zod.boolean().optional(),
+  "canManageVoters": zod.boolean().optional(),
+  "canMessageVoters": zod.boolean().optional(),
+  "canManageGifts": zod.boolean().optional(),
+  "canManageTeam": zod.boolean().optional()
+}).describe('Capability toggles for gabinete staff'),
+  "active": zod.boolean()
 })
 
 
@@ -305,6 +321,113 @@ export const GetDashboardSummaryResponse = zod.object({
 
 
 /**
+ * @summary List gabinete staff members (governance)
+ */
+export const ListTeamResponseItem = zod.object({
+  "id": zod.number(),
+  "clerkUserId": zod.string().nullish(),
+  "name": zod.string().nullish(),
+  "email": zod.string().nullish(),
+  "role": zod.string(),
+  "cargo": zod.string().nullish(),
+  "permissions": zod.object({
+  "canManageDemands": zod.boolean().optional(),
+  "canRespondDemands": zod.boolean().optional(),
+  "canManageProjects": zod.boolean().optional(),
+  "canManageNews": zod.boolean().optional(),
+  "canManageAgenda": zod.boolean().optional(),
+  "canManageAppointments": zod.boolean().optional(),
+  "canReleaseScheduleCards": zod.boolean().optional(),
+  "canManageStats": zod.boolean().optional(),
+  "canManageVoters": zod.boolean().optional(),
+  "canMessageVoters": zod.boolean().optional(),
+  "canManageGifts": zod.boolean().optional(),
+  "canManageTeam": zod.boolean().optional()
+}).describe('Capability toggles for gabinete staff'),
+  "active": zod.boolean(),
+  "createdAt": zod.coerce.date()
+})
+export const ListTeamResponse = zod.array(ListTeamResponseItem)
+
+
+/**
+ * @summary Invite/create a staff member by email (governance)
+ */
+export const CreateTeamMemberBody = zod.object({
+  "email": zod.string().email(),
+  "name": zod.string().nullish(),
+  "cargo": zod.string(),
+  "permissions": zod.object({
+  "canManageDemands": zod.boolean().optional(),
+  "canRespondDemands": zod.boolean().optional(),
+  "canManageProjects": zod.boolean().optional(),
+  "canManageNews": zod.boolean().optional(),
+  "canManageAgenda": zod.boolean().optional(),
+  "canManageAppointments": zod.boolean().optional(),
+  "canReleaseScheduleCards": zod.boolean().optional(),
+  "canManageStats": zod.boolean().optional(),
+  "canManageVoters": zod.boolean().optional(),
+  "canMessageVoters": zod.boolean().optional(),
+  "canManageGifts": zod.boolean().optional(),
+  "canManageTeam": zod.boolean().optional()
+}).optional().describe('Capability toggles for gabinete staff')
+})
+
+
+/**
+ * @summary Update a staff member's cargo, permissions or active state
+ */
+export const UpdateTeamMemberParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const UpdateTeamMemberBody = zod.object({
+  "name": zod.string().nullish(),
+  "cargo": zod.string().optional(),
+  "permissions": zod.object({
+  "canManageDemands": zod.boolean().optional(),
+  "canRespondDemands": zod.boolean().optional(),
+  "canManageProjects": zod.boolean().optional(),
+  "canManageNews": zod.boolean().optional(),
+  "canManageAgenda": zod.boolean().optional(),
+  "canManageAppointments": zod.boolean().optional(),
+  "canReleaseScheduleCards": zod.boolean().optional(),
+  "canManageStats": zod.boolean().optional(),
+  "canManageVoters": zod.boolean().optional(),
+  "canMessageVoters": zod.boolean().optional(),
+  "canManageGifts": zod.boolean().optional(),
+  "canManageTeam": zod.boolean().optional()
+}).optional().describe('Capability toggles for gabinete staff'),
+  "active": zod.boolean().optional()
+})
+
+export const UpdateTeamMemberResponse = zod.object({
+  "id": zod.number(),
+  "clerkUserId": zod.string().nullish(),
+  "name": zod.string().nullish(),
+  "email": zod.string().nullish(),
+  "role": zod.string(),
+  "cargo": zod.string().nullish(),
+  "permissions": zod.object({
+  "canManageDemands": zod.boolean().optional(),
+  "canRespondDemands": zod.boolean().optional(),
+  "canManageProjects": zod.boolean().optional(),
+  "canManageNews": zod.boolean().optional(),
+  "canManageAgenda": zod.boolean().optional(),
+  "canManageAppointments": zod.boolean().optional(),
+  "canReleaseScheduleCards": zod.boolean().optional(),
+  "canManageStats": zod.boolean().optional(),
+  "canManageVoters": zod.boolean().optional(),
+  "canMessageVoters": zod.boolean().optional(),
+  "canManageGifts": zod.boolean().optional(),
+  "canManageTeam": zod.boolean().optional()
+}).describe('Capability toggles for gabinete staff'),
+  "active": zod.boolean(),
+  "createdAt": zod.coerce.date()
+})
+
+
+/**
  * @summary List projects and laws
  */
 export const ListProjectsQueryParams = zod.object({
@@ -567,10 +690,378 @@ export const DeleteAgendaEventParams = zod.object({
 export const CreateAppointmentBody = zod.object({
   "subject": zod.string().min(1),
   "description": zod.string().optional(),
+  "slotId": zod.number().optional(),
   "preferredDate": zod.coerce.date().optional(),
   "citizenName": zod.string().min(1),
   "citizenEmail": zod.string().optional(),
   "citizenPhone": zod.string().optional()
+})
+
+
+/**
+ * @summary List released appointment slots with remaining availability
+ */
+export const ListAvailableSlotsResponseItem = zod.object({
+  "id": zod.number(),
+  "date": zod.coerce.date(),
+  "period": zod.string().describe('manha | tarde'),
+  "capacity": zod.number(),
+  "bookedCount": zod.number(),
+  "released": zod.boolean(),
+  "available": zod.number().describe('remaining capacity (capacity - bookedCount)'),
+  "note": zod.string().nullish(),
+  "createdAt": zod.coerce.date()
+})
+export const ListAvailableSlotsResponse = zod.array(ListAvailableSlotsResponseItem)
+
+
+/**
+ * @summary List all appointment slots (staff)
+ */
+export const ListSlotsResponseItem = zod.object({
+  "id": zod.number(),
+  "date": zod.coerce.date(),
+  "period": zod.string().describe('manha | tarde'),
+  "capacity": zod.number(),
+  "bookedCount": zod.number(),
+  "released": zod.boolean(),
+  "available": zod.number().describe('remaining capacity (capacity - bookedCount)'),
+  "note": zod.string().nullish(),
+  "createdAt": zod.coerce.date()
+})
+export const ListSlotsResponse = zod.array(ListSlotsResponseItem)
+
+
+/**
+ * @summary Create an appointment slot card (manager)
+ */
+export const CreateSlotBody = zod.object({
+  "date": zod.coerce.date(),
+  "period": zod.string(),
+  "capacity": zod.number().optional(),
+  "released": zod.boolean().optional(),
+  "note": zod.string().nullish()
+})
+
+
+/**
+ * @summary Release/hold or adjust an appointment slot card (manager)
+ */
+export const UpdateSlotParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const UpdateSlotBody = zod.object({
+  "capacity": zod.number().optional(),
+  "released": zod.boolean().optional(),
+  "note": zod.string().nullish()
+})
+
+export const UpdateSlotResponse = zod.object({
+  "id": zod.number(),
+  "date": zod.coerce.date(),
+  "period": zod.string().describe('manha | tarde'),
+  "capacity": zod.number(),
+  "bookedCount": zod.number(),
+  "released": zod.boolean(),
+  "available": zod.number().describe('remaining capacity (capacity - bookedCount)'),
+  "note": zod.string().nullish(),
+  "createdAt": zod.coerce.date()
+})
+
+
+/**
+ * @summary List voters / constituents (CRM)
+ */
+export const ListVotersQueryParams = zod.object({
+  "search": zod.coerce.string().optional()
+})
+
+export const ListVotersResponseItem = zod.object({
+  "id": zod.number(),
+  "name": zod.string(),
+  "whatsapp": zod.string().nullish(),
+  "email": zod.string().nullish(),
+  "birthDate": zod.coerce.date().nullish(),
+  "address": zod.string().nullish(),
+  "neighborhood": zod.string().nullish(),
+  "notes": zod.string().nullish(),
+  "createdAt": zod.coerce.date()
+})
+export const ListVotersResponse = zod.array(ListVotersResponseItem)
+
+
+/**
+ * @summary Add a voter to the CRM
+ */
+
+
+
+export const CreateVoterBody = zod.object({
+  "name": zod.string().min(1),
+  "whatsapp": zod.string().nullish(),
+  "email": zod.string().nullish(),
+  "birthDate": zod.coerce.date().nullish(),
+  "address": zod.string().nullish(),
+  "neighborhood": zod.string().nullish(),
+  "notes": zod.string().nullish()
+})
+
+
+/**
+ * @summary Update a voter record
+ */
+export const UpdateVoterParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+
+
+
+export const UpdateVoterBody = zod.object({
+  "name": zod.string().min(1),
+  "whatsapp": zod.string().nullish(),
+  "email": zod.string().nullish(),
+  "birthDate": zod.coerce.date().nullish(),
+  "address": zod.string().nullish(),
+  "neighborhood": zod.string().nullish(),
+  "notes": zod.string().nullish()
+})
+
+export const UpdateVoterResponse = zod.object({
+  "id": zod.number(),
+  "name": zod.string(),
+  "whatsapp": zod.string().nullish(),
+  "email": zod.string().nullish(),
+  "birthDate": zod.coerce.date().nullish(),
+  "address": zod.string().nullish(),
+  "neighborhood": zod.string().nullish(),
+  "notes": zod.string().nullish(),
+  "createdAt": zod.coerce.date()
+})
+
+
+/**
+ * @summary Remove a voter record
+ */
+export const DeleteVoterParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+
+/**
+ * @summary Voters with birthdays in the next N days (default 7)
+ */
+export const ListBirthdaysQueryParams = zod.object({
+  "days": zod.coerce.number().optional()
+})
+
+export const ListBirthdaysResponseItem = zod.object({
+  "id": zod.number(),
+  "name": zod.string(),
+  "whatsapp": zod.string().nullish(),
+  "birthDate": zod.coerce.date().nullish(),
+  "neighborhood": zod.string().nullish(),
+  "daysUntil": zod.number()
+})
+export const ListBirthdaysResponse = zod.array(ListBirthdaysResponseItem)
+
+
+/**
+ * @summary Outbound message log
+ */
+export const ListMessagesResponseItem = zod.object({
+  "id": zod.number(),
+  "voterId": zod.number().nullish(),
+  "recipientName": zod.string(),
+  "recipientContact": zod.string().nullish(),
+  "channel": zod.string(),
+  "kind": zod.string(),
+  "body": zod.string(),
+  "status": zod.string(),
+  "relatedDemandId": zod.number().nullish(),
+  "error": zod.string().nullish(),
+  "createdAt": zod.coerce.date(),
+  "sentAt": zod.coerce.date().nullish()
+})
+export const ListMessagesResponse = zod.array(ListMessagesResponseItem)
+
+
+/**
+ * @summary Queue an outbound message
+ */
+
+
+
+
+export const CreateMessageBody = zod.object({
+  "voterId": zod.number().nullish(),
+  "recipientName": zod.string().min(1),
+  "recipientContact": zod.string().nullish(),
+  "channel": zod.string().optional(),
+  "kind": zod.string().optional(),
+  "body": zod.string().min(1),
+  "relatedDemandId": zod.number().nullish()
+})
+
+
+/**
+ * @summary Attempt to dispatch a queued message via its channel provider
+ */
+export const SendMessageParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const SendMessageResponse = zod.object({
+  "id": zod.number(),
+  "voterId": zod.number().nullish(),
+  "recipientName": zod.string(),
+  "recipientContact": zod.string().nullish(),
+  "channel": zod.string(),
+  "kind": zod.string(),
+  "body": zod.string(),
+  "status": zod.string(),
+  "relatedDemandId": zod.number().nullish(),
+  "error": zod.string().nullish(),
+  "createdAt": zod.coerce.date(),
+  "sentAt": zod.coerce.date().nullish()
+})
+
+
+/**
+ * @summary List brindes (gifts) workflow
+ */
+export const ListGiftsResponseItem = zod.object({
+  "id": zod.number(),
+  "voterId": zod.number(),
+  "description": zod.string(),
+  "deliveryType": zod.string().describe('casa | gabinete'),
+  "occasion": zod.string().nullish(),
+  "status": zod.string().describe('pendente | preparando | entregue | cancelado'),
+  "scheduledFor": zod.coerce.date().nullish(),
+  "notes": zod.string().nullish(),
+  "createdAt": zod.coerce.date(),
+  "deliveredAt": zod.coerce.date().nullish()
+})
+export const ListGiftsResponse = zod.array(ListGiftsResponseItem)
+
+
+/**
+ * @summary Register a brinde for a voter
+ */
+
+
+
+export const CreateGiftBody = zod.object({
+  "voterId": zod.number(),
+  "description": zod.string().min(1),
+  "deliveryType": zod.string().optional(),
+  "occasion": zod.string().nullish(),
+  "scheduledFor": zod.coerce.date().nullish(),
+  "notes": zod.string().nullish()
+})
+
+
+/**
+ * @summary Advance the brinde workflow state
+ */
+export const UpdateGiftParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const UpdateGiftBody = zod.object({
+  "status": zod.string().optional(),
+  "deliveryType": zod.string().optional(),
+  "scheduledFor": zod.coerce.date().nullish(),
+  "notes": zod.string().nullish()
+})
+
+export const UpdateGiftResponse = zod.object({
+  "id": zod.number(),
+  "voterId": zod.number(),
+  "description": zod.string(),
+  "deliveryType": zod.string().describe('casa | gabinete'),
+  "occasion": zod.string().nullish(),
+  "status": zod.string().describe('pendente | preparando | entregue | cancelado'),
+  "scheduledFor": zod.coerce.date().nullish(),
+  "notes": zod.string().nullish(),
+  "createdAt": zod.coerce.date(),
+  "deliveredAt": zod.coerce.date().nullish()
+})
+
+
+/**
+ * @summary List reusable message templates
+ */
+export const ListMessageTemplatesResponseItem = zod.object({
+  "id": zod.number(),
+  "name": zod.string(),
+  "kind": zod.string(),
+  "body": zod.string(),
+  "createdAt": zod.coerce.date()
+})
+export const ListMessageTemplatesResponse = zod.array(ListMessageTemplatesResponseItem)
+
+
+/**
+ * @summary Create a message template
+ */
+
+
+
+
+export const CreateMessageTemplateBody = zod.object({
+  "name": zod.string().min(1),
+  "kind": zod.string().optional(),
+  "body": zod.string().min(1)
+})
+
+
+/**
+ * @summary Configuration status of external integrations (WhatsApp, ElevenLabs, HeyGen)
+ */
+export const ListIntegrationStatusResponseItem = zod.object({
+  "provider": zod.string(),
+  "configured": zod.boolean(),
+  "missing": zod.array(zod.string())
+})
+export const ListIntegrationStatusResponse = zod.array(ListIntegrationStatusResponseItem)
+
+
+/**
+ * @summary Synthesize speech via ElevenLabs (returns not-configured when no key)
+ */
+
+
+
+export const GenerateVoiceBody = zod.object({
+  "text": zod.string().min(1),
+  "voiceId": zod.string().nullish()
+})
+
+export const GenerateVoiceResponse = zod.object({
+  "ok": zod.boolean(),
+  "audioBase64": zod.string().nullish(),
+  "contentType": zod.string().nullish(),
+  "error": zod.string().nullish()
+})
+
+
+/**
+ * @summary Generate an avatar video via HeyGen (returns not-configured when no key)
+ */
+
+
+
+export const GenerateVideoBody = zod.object({
+  "script": zod.string().min(1),
+  "avatarId": zod.string().nullish()
+})
+
+export const GenerateVideoResponse = zod.object({
+  "ok": zod.boolean(),
+  "videoId": zod.string().nullish(),
+  "error": zod.string().nullish()
 })
 
 

@@ -10,6 +10,7 @@ export interface AppointmentInput {
   /** @minLength 1 */
   subject: string;
   description?: string;
+  slotId?: number;
   preferredDate?: Date;
   /** @minLength 1 */
   citizenName: string;

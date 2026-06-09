@@ -1,14 +1,21 @@
 import { SignIn } from "@clerk/react";
 import React from "react";
+import { AccessGateway } from "@/components/access-gateway";
 
 export default function SignInPage() {
   React.useEffect(() => {
     document.title = "Entrar - Gabinete Digital";
   }, []);
 
+  const redirectUrl =
+    typeof window !== "undefined" &&
+    new URLSearchParams(window.location.search).get("area") === "admin"
+      ? "/admin"
+      : "/portal";
+
   return (
-    <div className="min-h-[calc(100vh-8rem)] flex items-center justify-center p-4 bg-muted/30">
-      <SignIn routing="path" path="/sign-in" signUpUrl="/sign-up" forceRedirectUrl="/portal" />
-    </div>
+    <AccessGateway mode="sign-in">
+      <SignIn routing="path" path="/sign-in" signUpUrl="/sign-up" forceRedirectUrl={redirectUrl} />
+    </AccessGateway>
   );
 }

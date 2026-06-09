@@ -30,30 +30,41 @@ export default function Home() {
 
   return (
     <div className="flex flex-col w-full">
-      {/* Hero Section */}
-      <section className="relative overflow-hidden bg-secondary text-secondary-foreground py-20 md:py-32">
-        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center opacity-10 mix-blend-luminosity"></div>
-        <div className="absolute inset-0 bg-gradient-to-r from-secondary via-secondary/90 to-transparent"></div>
-        <div className="container mx-auto px-4 md:px-6 relative z-10">
-          <div className="max-w-3xl">
-            <span className="inline-block py-1 px-3 rounded-full bg-accent/20 text-accent font-medium text-sm mb-6 uppercase tracking-wider">
-              Sorocaba, SP
+      {/* Hero Section — split rhythm, institutional */}
+      <section className="relative overflow-hidden border-b border-[hsl(var(--gold)/0.3)] bg-background">
+        <div className="container mx-auto grid max-w-7xl gap-12 px-4 py-16 md:px-6 lg:grid-cols-2 lg:gap-16 lg:py-24">
+          <div className="flex flex-col justify-center">
+            <span className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">
+              Gabinete Digital · Sorocaba
             </span>
-            <h1 className="text-4xl md:text-6xl font-serif font-bold leading-tight mb-6 text-white">
-              Seu gabinete digital, <br />
-              <span className="text-accent">sempre de portas abertas.</span>
+            <h1 className="mt-4 font-serif text-5xl leading-[1.05] text-primary sm:text-6xl">
+              Cícero João
             </h1>
-            <p className="text-lg md:text-xl text-secondary-foreground/80 mb-8 max-w-2xl font-sans">
-              O mandato do Vereador Cícero João é feito com e para a população. Acompanhe nossos projetos, fiscalize as ações e envie as demandas do seu bairro diretamente para a nossa equipe.
+            <p className="mt-3 font-serif text-2xl text-secondary">Vereador por Sorocaba</p>
+            <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground">
+              Um mandato próximo, organizado e aberto para ouvir a população.
+              Atendimento, presença nos bairros e transparência em um só lugar.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Button asChild size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 h-14 px-8 text-base">
-                <Link href="/sign-up">Enviar uma Demanda <ArrowRight className="ml-2 h-5 w-5" /></Link>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Button asChild size="lg" className="h-13 bg-accent px-7 text-base text-accent-foreground ring-1 ring-[hsl(var(--gold))] hover:bg-gold hover:text-white">
+                <Link href="/demandas">Enviar uma Demanda <ArrowRight className="ml-2 h-5 w-5" /></Link>
               </Button>
-              <Button asChild size="lg" variant="outline" className="h-14 px-8 text-base border-accent text-accent hover:bg-accent/10">
-                <Link href="/mandato">Ver Ações do Mandato</Link>
+              <Button asChild size="lg" variant="outline" className="h-13 border-[hsl(var(--gold))] px-7 text-base text-primary hover:bg-accent/20">
+                <Link href="/agenda">Agendar atendimento</Link>
+              </Button>
+              <Button asChild size="lg" variant="ghost" className="h-13 px-7 text-base text-primary hover:bg-accent/15">
+                <Link href="/projetos">Conhecer projetos</Link>
               </Button>
             </div>
+          </div>
+
+          <div className="relative">
+            <div className="absolute inset-0 -translate-x-3 translate-y-3 rounded-[2rem] bg-accent/60" aria-hidden />
+            <img
+              src="/seed/civic-sorocaba.png"
+              alt="Vista institucional de Sorocaba"
+              className="relative aspect-[4/5] w-full rounded-[2rem] object-cover shadow-elegant ring-1 ring-[hsl(var(--gold)/0.4)]"
+            />
           </div>
         </div>
       </section>
@@ -124,7 +135,7 @@ export default function Home() {
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {projects?.slice(0, 3).map((project) => (
-              <Card key={project.id} className="hover-elevate overflow-hidden border-border/50">
+              <Card key={project.id} className="card-premium hover-elevate overflow-hidden transition-transform hover:-translate-y-1">
                 <CardContent className="p-6">
                   <div className="mb-4 flex gap-2 items-center">
                     <span className="text-xs font-semibold px-2.5 py-1 bg-primary/10 text-primary rounded-full uppercase tracking-wider">
@@ -160,7 +171,7 @@ export default function Home() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button asChild size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 h-14 px-8 text-base">
-              <Link href="/sign-up">Fazer uma Solicitação</Link>
+              <Link href="/demandas">Fazer uma Solicitação</Link>
             </Button>
             <Button asChild size="lg" variant="outline" className="h-14 px-8 text-base border-white text-white hover:bg-white/10">
               <Link href="/acompanhar">Acompanhar Protocolo</Link>

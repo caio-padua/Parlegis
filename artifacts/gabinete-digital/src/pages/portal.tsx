@@ -12,10 +12,12 @@ import {
   useCreateDemand, 
   useCreateAppointment, 
   useListMyAppointments,
+  useListAvailableSlots,
   useGetDemand,
   useListDemandActivities,
   getListMyDemandsQueryKey,
   getListMyAppointmentsQueryKey,
+  getListAvailableSlotsQueryKey,
   getGetCurrentUserQueryKey,
   getListCategoriesQueryKey,
   getListNeighborhoodsQueryKey,
@@ -78,10 +80,12 @@ export default function PortalPage() {
 
   const [activeTab, setActiveTab] = useState("minhas-demandas");
   const [selectedDemandId, setSelectedDemandId] = useState<number | null>(null);
+  const [selectedSlotId, setSelectedSlotId] = useState<number | null>(null);
 
   // Queries
   const { data: myDemands, isLoading: loadingDemands } = useListMyDemands({ query: { enabled: !!user, queryKey: getListMyDemandsQueryKey() } });
   const { data: myAppointments, isLoading: loadingAppointments } = useListMyAppointments({ query: { enabled: !!user, queryKey: getListMyAppointmentsQueryKey() } });
+  const { data: availableSlots } = useListAvailableSlots({ query: { enabled: !!user, queryKey: getListAvailableSlotsQueryKey() } });
   const { data: categories } = useListCategories({ query: { enabled: true, queryKey: getListCategoriesQueryKey() } });
   const { data: neighborhoods } = useListNeighborhoods({ query: { enabled: true, queryKey: getListNeighborhoodsQueryKey() } });
   
@@ -163,13 +167,18 @@ export default function PortalPage() {
 
   const onAppointmentSubmit = async (values: z.infer<typeof appointmentSchema>) => {
     try {
-      await createAppointment.mutateAsync({ data: values });
+      await createAppointment.mutateAsync({
+        data: { ...values, ...(selectedSlotId ? { slotId: selectedSlotId } : {}) },
+      });
       toast({ title: "Agendamento solicitado com sucesso!" });
       appointmentForm.reset();
+      setSelectedSlotId(null);
       queryClient.invalidateQueries({ queryKey: getListMyAppointmentsQueryKey() });
+      queryClient.invalidateQueries({ queryKey: getListAvailableSlotsQueryKey() });
       setActiveTab("agendamentos");
     } catch (err) {
-      toast({ title: "Erro ao solicitar agendamento", variant: "destructive" });
+      toast({ title: "Não foi possível agendar", description: "O horário pode ter sido preenchido. Tente outro.", variant: "destructive" });
+      queryClient.invalidateQueries({ queryKey: getListAvailableSlotsQueryKey() });
     }
   };
 
@@ -403,6 +412,38 @@ export default function PortalPage() {
                       </FormItem>
                     )} />
                     
+                    {availableSlots && availableSlots.length > 0 ? (
+                      <FormItem className="md:col-span-2">
+                        <FormLabel>Horários disponíveis</FormLabel>
+                        <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mt-1">
+                          {availableSlots.map((s) => {
+                            const dt = new Date(s.date);
+                            const label = dt.toLocaleDateString("pt-BR", { weekday: "short", day: "2-digit", month: "2-digit", timeZone: "UTC" });
+                            const periodo = s.period === "manha" ? "Manhã" : "Tarde";
+                            const selected = selectedSlotId === s.id;
+                            return (
+                              <button
+                                type="button"
+                                key={s.id}
+                                onClick={() => setSelectedSlotId(selected ? null : s.id)}
+                                className={`text-left rounded-lg border p-3 transition-colors ${selected ? "border-primary bg-primary/5 ring-1 ring-primary" : "border-border hover:border-primary/50"}`}
+                              >
+                                <p className="text-sm font-semibold capitalize">{label}</p>
+                                <p className="text-xs text-muted-foreground">{periodo} · {s.available} {s.available === 1 ? "vaga" : "vagas"}</p>
+                                {s.note ? <p className="text-xs text-muted-foreground mt-1">{s.note}</p> : null}
+                              </button>
+                            );
+                          })}
+                        </div>
+                        <p className="text-xs text-muted-foreground mt-2">Selecione um horário liberado pelo gabinete ou descreva sua preferência abaixo.</p>
+                      </FormItem>
+                    ) : (
+                      <FormItem className="md:col-span-2">
+                        <FormLabel>Horários disponíveis</FormLabel>
+                        <p className="text-sm text-muted-foreground">Nenhum horário liberado no momento. Informe sua preferência abaixo e o gabinete entrará em contato.</p>
+                      </FormItem>
+                    )}
+
                     <FormField control={appointmentForm.control} name="preferredDate" render={({ field }) => (
                       <FormItem className="md:col-span-2">
                         <FormLabel>Data/Turno de Preferência (Opcional)</FormLabel>

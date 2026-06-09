@@ -1,10 +1,11 @@
-import { date, pgTable, serial, text, timestamp } from "drizzle-orm/pg-core";
+import { date, integer, pgTable, serial, text, timestamp } from "drizzle-orm/pg-core";
 
 export const appointmentsTable = pgTable("appointments", {
   id: serial("id").primaryKey(),
   protocol: text("protocol").notNull().unique(),
   subject: text("subject").notNull(),
   description: text("description"),
+  slotId: integer("slot_id"),
   preferredDate: date("preferred_date", { mode: "string" }),
   status: text("status").notNull().default("solicitado"),
   scheduledAt: timestamp("scheduled_at", { withTimezone: true }),

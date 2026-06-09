@@ -5,14 +5,23 @@
  * API specification for Gabinete Digital Cícero João
  * OpenAPI spec version: 0.1.0
  */
+import type { Permissions } from './permissions';
 
 export interface CurrentUser {
   id: number;
-  clerkUserId?: string;
+  /** @nullable */
+  clerkUserId?: string | null;
   /** @nullable */
   name?: string | null;
   /** @nullable */
   email?: string | null;
-  /** citizen or admin */
+  /** citizen, staff or admin */
   role: string;
+  /**
+     * staff title (vereador, chefe_gabinete, assessor_*, atendimento)
+     * @nullable
+     */
+  cargo?: string | null;
+  permissions: Permissions;
+  active: boolean;
 }

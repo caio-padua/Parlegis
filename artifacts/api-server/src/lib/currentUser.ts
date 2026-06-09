@@ -1,6 +1,6 @@
 import type { Request } from "express";
 import { getAuth, clerkClient } from "@clerk/express";
-import { eq, sql } from "drizzle-orm";
+import { and, eq, isNull, sql } from "drizzle-orm";
 import { db, usersTable, type User } from "@workspace/db";
 
 // Advisory lock key used to serialize JIT user provisioning so the
@@ -9,8 +9,10 @@ const PROVISION_LOCK_KEY = 918273;
 
 /**
  * Resolve the DB user for the authenticated Clerk session, provisioning
- * (JIT) on first sight. The very first user to register becomes "admin";
- * everyone after is a "citizen".
+ * (JIT) on first sight. Resolution order inside the lock:
+ *   1. Existing row for this clerk id.
+ *   2. A pending staff invite (row with matching email and no clerk id) — claimed.
+ *   3. The very first user ever becomes "admin" (vereador); everyone else "citizen".
  */
 export async function getOrCreateCurrentUser(
   req: Request,
@@ -41,8 +43,7 @@ export async function getOrCreateCurrentUser(
   }
 
   // Serialize provisioning with a transaction-scoped advisory lock so the
-  // role decision (count === 0 => admin) cannot race between concurrent
-  // first-time requests, and a duplicate Clerk id resolves cleanly.
+  // role decision and invite-claim cannot race between concurrent requests.
   const provisioned = await db.transaction(async (tx) => {
     await tx.execute(sql`SELECT pg_advisory_xact_lock(${PROVISION_LOCK_KEY})`);
 
@@ -52,14 +53,39 @@ export async function getOrCreateCurrentUser(
       .where(eq(usersTable.clerkUserId, clerkUserId));
     if (again) return again;
 
+    // Claim a pending staff invite created by an admin (matching email, no clerk id).
+    if (email) {
+      const [invite] = await tx
+        .select()
+        .from(usersTable)
+        .where(
+          and(eq(usersTable.email, email), isNull(usersTable.clerkUserId)),
+        );
+      if (invite) {
+        const [claimed] = await tx
+          .update(usersTable)
+          .set({ clerkUserId, name: invite.name ?? name })
+          .where(eq(usersTable.id, invite.id))
+          .returning();
+        if (claimed) return claimed;
+      }
+    }
+
     const [{ count }] = await tx
       .select({ count: sql<number>`count(*)::int` })
       .from(usersTable);
-    const role = count === 0 ? "admin" : "citizen";
+    const isFirst = count === 0;
+    const role = isFirst ? "admin" : "citizen";
 
     const [created] = await tx
       .insert(usersTable)
-      .values({ clerkUserId, name, email, role })
+      .values({
+        clerkUserId,
+        name,
+        email,
+        role,
+        cargo: isFirst ? "vereador" : null,
+      })
       .onConflictDoNothing()
       .returning();
     if (created) return created;

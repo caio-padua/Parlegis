@@ -12,7 +12,7 @@ import {
   DeleteProjectParams,
 } from "@workspace/api-zod";
 import { db, projectsTable } from "@workspace/db";
-import { requireAdmin } from "../middlewares/auth";
+import { requirePermission } from "../middlewares/auth";
 
 const router: IRouter = Router();
 
@@ -34,7 +34,7 @@ router.get("/projects", async (req, res): Promise<void> => {
   res.json(ListProjectsResponse.parse(rows));
 });
 
-router.post("/projects", requireAdmin, async (req, res): Promise<void> => {
+router.post("/projects", requirePermission("canManageProjects"), async (req, res): Promise<void> => {
   const parsed = CreateProjectBody.safeParse(req.body);
   if (!parsed.success) {
     res.status(400).json({ error: parsed.error.message });
@@ -64,7 +64,7 @@ router.get("/projects/:id", async (req, res): Promise<void> => {
   res.json(GetProjectResponse.parse(project));
 });
 
-router.patch("/projects/:id", requireAdmin, async (req, res): Promise<void> => {
+router.patch("/projects/:id", requirePermission("canManageProjects"), async (req, res): Promise<void> => {
   const params = UpdateProjectParams.safeParse(req.params);
   if (!params.success) {
     res.status(400).json({ error: params.error.message });
@@ -87,7 +87,7 @@ router.patch("/projects/:id", requireAdmin, async (req, res): Promise<void> => {
   res.json(UpdateProjectResponse.parse(updated));
 });
 
-router.delete("/projects/:id", requireAdmin, async (req, res): Promise<void> => {
+router.delete("/projects/:id", requirePermission("canManageProjects"), async (req, res): Promise<void> => {
   const params = DeleteProjectParams.safeParse(req.params);
   if (!params.success) {
     res.status(400).json({ error: params.error.message });

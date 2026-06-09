@@ -1,14 +1,15 @@
 import { SignUp } from "@clerk/react";
 import React from "react";
+import { AccessGateway } from "@/components/access-gateway";
 
 export default function SignUpPage() {
   React.useEffect(() => {
-    document.title = "Cadastrar - Gabinete Digital";
+    document.title = "Criar acesso - Gabinete Digital";
   }, []);
 
   return (
-    <div className="min-h-[calc(100vh-8rem)] flex items-center justify-center p-4 bg-muted/30 py-12">
+    <AccessGateway mode="sign-up">
       <SignUp routing="path" path="/sign-up" signInUrl="/sign-in" forceRedirectUrl="/portal" />
-    </div>
+    </AccessGateway>
   );
 }

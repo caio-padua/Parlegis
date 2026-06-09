@@ -9,12 +9,15 @@ import {
   GetDashboardSummaryResponse,
 } from "@workspace/api-zod";
 import { db, demandsTable, demandActivitiesTable } from "@workspace/db";
-import { requireAdmin } from "../middlewares/auth";
+import { requireStaff, requirePermission } from "../middlewares/auth";
 import { demandsQuery } from "../lib/queries";
 
 const router: IRouter = Router();
 
-router.get("/admin/demands", requireAdmin, async (req, res): Promise<void> => {
+router.get(
+  "/admin/demands",
+  requirePermission("canManageDemands"),
+  async (req, res): Promise<void> => {
   const parsed = ListDemandsQueryParams.safeParse(req.query);
   if (!parsed.success) {
     res.status(400).json({ error: parsed.error.message });
@@ -33,11 +36,12 @@ router.get("/admin/demands", requireAdmin, async (req, res): Promise<void> => {
     desc(demandsTable.createdAt),
   );
   res.json(ListDemandsResponse.parse(rows));
-});
+  },
+);
 
 router.post(
   "/admin/demands/:id/activities",
-  requireAdmin,
+  requirePermission("canRespondDemands"),
   async (req, res): Promise<void> => {
     const params = CreateDemandActivityParams.safeParse(req.params);
     if (!params.success) {
@@ -80,7 +84,7 @@ router.post(
   },
 );
 
-router.get("/admin/dashboard", requireAdmin, async (_req, res): Promise<void> => {
+router.get("/admin/dashboard", requireStaff, async (_req, res): Promise<void> => {
   const [{ total }] = await db
     .select({ total: sql<number>`count(*)::int` })
     .from(demandsTable);

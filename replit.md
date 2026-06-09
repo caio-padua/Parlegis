@@ -35,10 +35,12 @@ Institutional mandate portal and digital office for Sorocaba (SP) city councilma
 - Demand/appointment protocols use `DEM-`/`ATD-` prefixes. Demand statuses: recebida, em_analise, encaminhada, aguardando_resposta, em_acompanhamento, resolvida, arquivada.
 - Citizen demand photos go to private object storage; served at `/api/storage/objects/...` and gated so only the owning citizen or an admin can read them.
 - Public content (mandate stats, projects, news, agenda, demand counts, track-by-protocol) needs no auth; citizen/admin routes require it.
+- RBAC: capabilities are per-route via `requirePermission(cap)`; `admin` (vereador) implicitly has all. CRM caps: `canManageVoters`, `canMessageVoters`, `canManageGifts`.
+- External integrations (`artifacts/api-server/src/lib/integrations/`: whatsapp, elevenlabs, heygen) read keys from env and degrade gracefully (structured `ok:false`/`error`, `configured:false`) when unset. Optional env: `WHATSAPP_TOKEN`, `WHATSAPP_PHONE_ID`, `ELEVENLABS_API_KEY` (+`ELEVENLABS_VOICE_ID`), `HEYGEN_API_KEY` (+`HEYGEN_AVATAR_ID`). Outbound message dispatch currently only implements WhatsApp; sms/email fail gracefully.
 
 ## Product
 
-Public: home, biografia, mandato em números, projetos (lei/ofícios), demandas por região, acompanhar protocolo, agenda, notícias. Citizen portal: register/track demands with photo upload, request appointments. Admin panel: manage demands + activity timeline, projects, news, agenda, appointments, mandate stats.
+Public: home, biografia, mandato em números, projetos (lei/ofícios), demandas por região, acompanhar protocolo, agenda, notícias. Citizen portal: register/track demands with photo upload, request appointments (picks released slot cards). Admin panel: manage demands + activity timeline, projects, news, agenda, appointments, mandate stats, scheduling cards (Cartões de Agenda), team/governance (RBAC), voter CRM (Eleitores), messaging (Mensagens), gifts/brindes, and external integrations status (Integrações & IA).
 
 ## User preferences
 

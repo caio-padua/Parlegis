@@ -11,7 +11,7 @@ import {
   DeleteNewsArticleParams,
 } from "@workspace/api-zod";
 import { db, newsTable } from "@workspace/db";
-import { requireAdmin } from "../middlewares/auth";
+import { requirePermission } from "../middlewares/auth";
 
 const router: IRouter = Router();
 
@@ -23,7 +23,7 @@ router.get("/news", async (_req, res): Promise<void> => {
   res.json(ListNewsResponse.parse(rows));
 });
 
-router.post("/news", requireAdmin, async (req, res): Promise<void> => {
+router.post("/news", requirePermission("canManageNews"), async (req, res): Promise<void> => {
   const parsed = CreateNewsArticleBody.safeParse(req.body);
   if (!parsed.success) {
     res.status(400).json({ error: parsed.error.message });
@@ -57,7 +57,7 @@ router.get("/news/:id", async (req, res): Promise<void> => {
   res.json(GetNewsArticleResponse.parse(article));
 });
 
-router.patch("/news/:id", requireAdmin, async (req, res): Promise<void> => {
+router.patch("/news/:id", requirePermission("canManageNews"), async (req, res): Promise<void> => {
   const params = UpdateNewsArticleParams.safeParse(req.params);
   if (!params.success) {
     res.status(400).json({ error: params.error.message });
@@ -84,7 +84,7 @@ router.patch("/news/:id", requireAdmin, async (req, res): Promise<void> => {
   res.json(UpdateNewsArticleResponse.parse(updated));
 });
 
-router.delete("/news/:id", requireAdmin, async (req, res): Promise<void> => {
+router.delete("/news/:id", requirePermission("canManageNews"), async (req, res): Promise<void> => {
   const params = DeleteNewsArticleParams.safeParse(req.params);
   if (!params.success) {
     res.status(400).json({ error: params.error.message });

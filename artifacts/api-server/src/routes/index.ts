@@ -11,6 +11,10 @@ import projectsRouter from "./projects";
 import newsRouter from "./news";
 import agendaRouter from "./agenda";
 import appointmentsRouter from "./appointments";
+import slotsRouter from "./slots";
+import crmRouter from "./crm";
+import aiRouter from "./ai";
+import teamRouter from "./team";
 
 const router: IRouter = Router();
 
@@ -26,5 +30,9 @@ router.use(projectsRouter);
 router.use(newsRouter);
 router.use(agendaRouter);
 router.use(appointmentsRouter);
+router.use(slotsRouter);
+router.use(crmRouter);
+router.use(aiRouter);
+router.use(teamRouter);
 
 export default router;

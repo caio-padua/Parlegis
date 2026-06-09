@@ -363,6 +363,81 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorEnvelope"
 
+  /admin/team:
+    get:
+      tags: [Admin]
+      operationId: listTeam
+      summary: List gabinete staff members (governance)
+      responses:
+        "200":
+          description: Team members
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/TeamMember"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+    post:
+      tags: [Admin]
+      operationId: createTeamMember
+      summary: Invite/create a staff member by email (governance)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TeamMemberInput"
+      responses:
+        "201":
+          description: Team member created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TeamMember"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+
+  /admin/team/{id}:
+    patch:
+      tags: [Admin]
+      operationId: updateTeamMember
+      summary: Update a staff member's cargo, permissions or active state
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TeamMemberUpdate"
+      responses:
+        "200":
+          description: Team member updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TeamMember"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+
   /projects:
     get:
       tags: [Public]
@@ -709,6 +784,488 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorEnvelope"
 
+  /appointment-slots:
+    get:
+      tags: [Citizen]
+      operationId: listAvailableSlots
+      summary: List released appointment slots with remaining availability
+      responses:
+        "200":
+          description: Released slots
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/AppointmentSlot"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+
+  /admin/appointment-slots:
+    get:
+      tags: [Admin]
+      operationId: listSlots
+      summary: List all appointment slots (staff)
+      responses:
+        "200":
+          description: Slots
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/AppointmentSlot"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+    post:
+      tags: [Admin]
+      operationId: createSlot
+      summary: Create an appointment slot card (manager)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AppointmentSlotInput"
+      responses:
+        "201":
+          description: Slot created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppointmentSlot"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+
+  /admin/appointment-slots/{id}:
+    patch:
+      tags: [Admin]
+      operationId: updateSlot
+      summary: Release/hold or adjust an appointment slot card (manager)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AppointmentSlotUpdate"
+      responses:
+        "200":
+          description: Slot updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppointmentSlot"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+
+  /admin/voters:
+    get:
+      tags: [Admin]
+      operationId: listVoters
+      summary: List voters / constituents (CRM)
+      parameters:
+        - name: search
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Voters
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Voter"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+    post:
+      tags: [Admin]
+      operationId: createVoter
+      summary: Add a voter to the CRM
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VoterInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Voter"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+
+  /admin/voters/{id}:
+    patch:
+      tags: [Admin]
+      operationId: updateVoter
+      summary: Update a voter record
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VoterInput"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Voter"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+    delete:
+      tags: [Admin]
+      operationId: deleteVoter
+      summary: Remove a voter record
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+
+  /admin/voters/birthdays:
+    get:
+      tags: [Admin]
+      operationId: listBirthdays
+      summary: Voters with birthdays in the next N days (default 7)
+      parameters:
+        - name: days
+          in: query
+          required: false
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Birthday voters
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/BirthdayVoter"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+
+  /admin/messages:
+    get:
+      tags: [Admin]
+      operationId: listMessages
+      summary: Outbound message log
+      responses:
+        "200":
+          description: Messages
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Message"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+    post:
+      tags: [Admin]
+      operationId: createMessage
+      summary: Queue an outbound message
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MessageInput"
+      responses:
+        "201":
+          description: Queued
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Message"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+
+  /admin/messages/{id}/send:
+    post:
+      tags: [Admin]
+      operationId: sendMessage
+      summary: Attempt to dispatch a queued message via its channel provider
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Dispatch attempted (see status / error)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Message"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+
+  /admin/gifts:
+    get:
+      tags: [Admin]
+      operationId: listGifts
+      summary: List brindes (gifts) workflow
+      responses:
+        "200":
+          description: Gifts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Gift"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+    post:
+      tags: [Admin]
+      operationId: createGift
+      summary: Register a brinde for a voter
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GiftInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Gift"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+
+  /admin/gifts/{id}:
+    patch:
+      tags: [Admin]
+      operationId: updateGift
+      summary: Advance the brinde workflow state
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GiftUpdate"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Gift"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+
+  /admin/message-templates:
+    get:
+      tags: [Admin]
+      operationId: listMessageTemplates
+      summary: List reusable message templates
+      responses:
+        "200":
+          description: Templates
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/MessageTemplate"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+    post:
+      tags: [Admin]
+      operationId: createMessageTemplate
+      summary: Create a message template
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MessageTemplateInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageTemplate"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+
+  /admin/integrations:
+    get:
+      tags: [Admin]
+      operationId: listIntegrationStatus
+      summary: Configuration status of external integrations (WhatsApp, ElevenLabs, HeyGen)
+      responses:
+        "200":
+          description: Integration statuses
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/IntegrationStatus"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+
+  /admin/ai/voice:
+    post:
+      tags: [Admin]
+      operationId: generateVoice
+      summary: Synthesize speech via ElevenLabs (returns not-configured when no key)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VoiceRequest"
+      responses:
+        "200":
+          description: Result (ok=false with error when not configured)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VoiceResponse"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+
+  /admin/ai/video:
+    post:
+      tags: [Admin]
+      operationId: generateVideo
+      summary: Generate an avatar video via HeyGen (returns not-configured when no key)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VideoRequest"
+      responses:
+        "200":
+          description: Result (ok=false with error when not configured)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VideoResponse"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+
   /me/appointments:
     get:
       tags: [Citizen]
@@ -903,21 +1460,107 @@ components:
         error:
           type: string
 
+    Permissions:
+      type: object
+      description: "Capability toggles for gabinete staff"
+      properties:
+        canManageDemands:
+          type: boolean
+        canRespondDemands:
+          type: boolean
+        canManageProjects:
+          type: boolean
+        canManageNews:
+          type: boolean
+        canManageAgenda:
+          type: boolean
+        canManageAppointments:
+          type: boolean
+        canReleaseScheduleCards:
+          type: boolean
+        canManageStats:
+          type: boolean
+        canManageVoters:
+          type: boolean
+        canMessageVoters:
+          type: boolean
+        canManageGifts:
+          type: boolean
+        canManageTeam:
+          type: boolean
+
     CurrentUser:
       type: object
-      required: [id, role]
+      required: [id, role, permissions, active]
       properties:
         id:
           type: integer
         clerkUserId:
-          type: string
+          type: ["string", "null"]
         name:
           type: ["string", "null"]
         email:
           type: ["string", "null"]
         role:
           type: string
-          description: "citizen or admin"
+          description: "citizen, staff or admin"
+        cargo:
+          type: ["string", "null"]
+          description: "staff title (vereador, chefe_gabinete, assessor_*, atendimento)"
+        permissions:
+          $ref: "#/components/schemas/Permissions"
+        active:
+          type: boolean
+
+    TeamMember:
+      type: object
+      required: [id, role, permissions, active, createdAt]
+      properties:
+        id:
+          type: integer
+        clerkUserId:
+          type: ["string", "null"]
+        name:
+          type: ["string", "null"]
+        email:
+          type: ["string", "null"]
+        role:
+          type: string
+        cargo:
+          type: ["string", "null"]
+        permissions:
+          $ref: "#/components/schemas/Permissions"
+        active:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+
+    TeamMemberInput:
+      type: object
+      required: [email, cargo]
+      properties:
+        email:
+          type: string
+          format: email
+        name:
+          type: ["string", "null"]
+        cargo:
+          type: string
+        permissions:
+          $ref: "#/components/schemas/Permissions"
+
+    TeamMemberUpdate:
+      type: object
+      properties:
+        name:
+          type: ["string", "null"]
+        cargo:
+          type: string
+        permissions:
+          $ref: "#/components/schemas/Permissions"
+        active:
+          type: boolean
 
     MandateStats:
       type: object
@@ -1347,6 +1990,8 @@ components:
           minLength: 1
         description:
           type: string
+        slotId:
+          type: integer
         preferredDate:
           type: string
           format: date
@@ -1366,6 +2011,323 @@ components:
         scheduledAt:
           type: string
           format: date-time
+
+    AppointmentSlot:
+      type: object
+      required: [id, date, period, capacity, bookedCount, released, available, createdAt]
+      properties:
+        id:
+          type: integer
+        date:
+          type: string
+          format: date
+        period:
+          type: string
+          description: "manha | tarde"
+        capacity:
+          type: integer
+        bookedCount:
+          type: integer
+        released:
+          type: boolean
+        available:
+          type: integer
+          description: "remaining capacity (capacity - bookedCount)"
+        note:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+          format: date-time
+
+    AppointmentSlotInput:
+      type: object
+      required: [date, period]
+      properties:
+        date:
+          type: string
+          format: date
+        period:
+          type: string
+        capacity:
+          type: integer
+        released:
+          type: boolean
+        note:
+          type: ["string", "null"]
+
+    AppointmentSlotUpdate:
+      type: object
+      properties:
+        capacity:
+          type: integer
+        released:
+          type: boolean
+        note:
+          type: ["string", "null"]
+
+    Voter:
+      type: object
+      required: [id, name, createdAt]
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        whatsapp:
+          type: ["string", "null"]
+        email:
+          type: ["string", "null"]
+        birthDate:
+          type: ["string", "null"]
+          format: date
+        address:
+          type: ["string", "null"]
+        neighborhood:
+          type: ["string", "null"]
+        notes:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+          format: date-time
+
+    VoterInput:
+      type: object
+      required: [name]
+      properties:
+        name:
+          type: string
+          minLength: 1
+        whatsapp:
+          type: ["string", "null"]
+        email:
+          type: ["string", "null"]
+        birthDate:
+          type: ["string", "null"]
+          format: date
+        address:
+          type: ["string", "null"]
+        neighborhood:
+          type: ["string", "null"]
+        notes:
+          type: ["string", "null"]
+
+    BirthdayVoter:
+      type: object
+      required: [id, name, daysUntil]
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        whatsapp:
+          type: ["string", "null"]
+        birthDate:
+          type: ["string", "null"]
+          format: date
+        neighborhood:
+          type: ["string", "null"]
+        daysUntil:
+          type: integer
+
+    Message:
+      type: object
+      required: [id, recipientName, channel, kind, body, status, createdAt]
+      properties:
+        id:
+          type: integer
+        voterId:
+          type: ["integer", "null"]
+        recipientName:
+          type: string
+        recipientContact:
+          type: ["string", "null"]
+        channel:
+          type: string
+        kind:
+          type: string
+        body:
+          type: string
+        status:
+          type: string
+        relatedDemandId:
+          type: ["integer", "null"]
+        error:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+          format: date-time
+        sentAt:
+          type: ["string", "null"]
+          format: date-time
+
+    MessageInput:
+      type: object
+      required: [recipientName, body]
+      properties:
+        voterId:
+          type: ["integer", "null"]
+        recipientName:
+          type: string
+          minLength: 1
+        recipientContact:
+          type: ["string", "null"]
+        channel:
+          type: string
+        kind:
+          type: string
+        body:
+          type: string
+          minLength: 1
+        relatedDemandId:
+          type: ["integer", "null"]
+
+    Gift:
+      type: object
+      required: [id, voterId, description, deliveryType, status, createdAt]
+      properties:
+        id:
+          type: integer
+        voterId:
+          type: integer
+        description:
+          type: string
+        deliveryType:
+          type: string
+          description: "casa | gabinete"
+        occasion:
+          type: ["string", "null"]
+        status:
+          type: string
+          description: "pendente | preparando | entregue | cancelado"
+        scheduledFor:
+          type: ["string", "null"]
+          format: date
+        notes:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+          format: date-time
+        deliveredAt:
+          type: ["string", "null"]
+          format: date-time
+
+    GiftInput:
+      type: object
+      required: [voterId, description]
+      properties:
+        voterId:
+          type: integer
+        description:
+          type: string
+          minLength: 1
+        deliveryType:
+          type: string
+        occasion:
+          type: ["string", "null"]
+        scheduledFor:
+          type: ["string", "null"]
+          format: date
+        notes:
+          type: ["string", "null"]
+
+    GiftUpdate:
+      type: object
+      properties:
+        status:
+          type: string
+        deliveryType:
+          type: string
+        scheduledFor:
+          type: ["string", "null"]
+          format: date
+        notes:
+          type: ["string", "null"]
+
+    MessageTemplate:
+      type: object
+      required: [id, name, kind, body, createdAt]
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        kind:
+          type: string
+        body:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+
+    MessageTemplateInput:
+      type: object
+      required: [name, body]
+      properties:
+        name:
+          type: string
+          minLength: 1
+        kind:
+          type: string
+        body:
+          type: string
+          minLength: 1
+
+    IntegrationStatus:
+      type: object
+      required: [provider, configured, missing]
+      properties:
+        provider:
+          type: string
+        configured:
+          type: boolean
+        missing:
+          type: array
+          items:
+            type: string
+
+    VoiceRequest:
+      type: object
+      required: [text]
+      properties:
+        text:
+          type: string
+          minLength: 1
+        voiceId:
+          type: ["string", "null"]
+
+    VoiceResponse:
+      type: object
+      required: [ok]
+      properties:
+        ok:
+          type: boolean
+        audioBase64:
+          type: ["string", "null"]
+        contentType:
+          type: ["string", "null"]
+        error:
+          type: ["string", "null"]
+
+    VideoRequest:
+      type: object
+      required: [script]
+      properties:
+        script:
+          type: string
+          minLength: 1
+        avatarId:
+          type: ["string", "null"]
+
+    VideoResponse:
+      type: object
+      required: [ok]
+      properties:
+        ok:
+          type: boolean
+        videoId:
+          type: ["string", "null"]
+        error:
+          type: ["string", "null"]
 
     DashboardSummary:
       type: object

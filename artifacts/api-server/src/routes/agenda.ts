@@ -9,7 +9,7 @@ import {
   DeleteAgendaEventParams,
 } from "@workspace/api-zod";
 import { db, agendaTable } from "@workspace/db";
-import { requireAdmin } from "../middlewares/auth";
+import { requirePermission } from "../middlewares/auth";
 
 const router: IRouter = Router();
 
@@ -21,7 +21,7 @@ router.get("/agenda", async (_req, res): Promise<void> => {
   res.json(ListAgendaResponse.parse(rows));
 });
 
-router.post("/agenda", requireAdmin, async (req, res): Promise<void> => {
+router.post("/agenda", requirePermission("canManageAgenda"), async (req, res): Promise<void> => {
   const parsed = CreateAgendaEventBody.safeParse(req.body);
   if (!parsed.success) {
     res.status(400).json({ error: parsed.error.message });
@@ -35,7 +35,7 @@ router.post("/agenda", requireAdmin, async (req, res): Promise<void> => {
   res.status(201).json(UpdateAgendaEventResponse.parse(created));
 });
 
-router.patch("/agenda/:id", requireAdmin, async (req, res): Promise<void> => {
+router.patch("/agenda/:id", requirePermission("canManageAgenda"), async (req, res): Promise<void> => {
   const params = UpdateAgendaEventParams.safeParse(req.params);
   if (!params.success) {
     res.status(400).json({ error: params.error.message });
@@ -62,7 +62,7 @@ router.patch("/agenda/:id", requireAdmin, async (req, res): Promise<void> => {
   res.json(UpdateAgendaEventResponse.parse(updated));
 });
 
-router.delete("/agenda/:id", requireAdmin, async (req, res): Promise<void> => {
+router.delete("/agenda/:id", requirePermission("canManageAgenda"), async (req, res): Promise<void> => {
   const params = DeleteAgendaEventParams.safeParse(req.params);
   if (!params.success) {
     res.status(400).json({ error: params.error.message });

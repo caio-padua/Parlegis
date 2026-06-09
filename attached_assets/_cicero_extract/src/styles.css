@@ -1,0 +1,174 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * Gabinete Digital Cícero João — Sistema de Design
+ * Paleta PSB Institucional Premium em oklch.
+ * Bordô #8B1E2D · Vermelho social #B3262E · Ouro velho #C99A2E
+ * Champagne #E7C873 · Creme #F8F3E8 · Branco quente #FFFDF8
+ * Grafite #242424 · Azul petróleo #102D3C
+ */
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+
+  --font-display: "Playfair Display", ui-serif, Georgia, serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-ring-offset-background: var(--background);
+
+  --color-bordo: var(--bordo);
+  --color-vermelho: var(--vermelho);
+  --color-ouro: var(--ouro);
+  --color-champagne: var(--champagne);
+  --color-creme: var(--creme);
+  --color-petroleo: var(--petroleo);
+  --color-grafite: var(--grafite);
+
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  --shadow-elegant: 0 18px 45px -20px color-mix(in oklab, var(--petroleo) 35%, transparent);
+}
+
+:root {
+  --radius: 0.875rem;
+
+  /* Paleta PSB Premium em oklch */
+  --bordo: oklch(0.42 0.14 24);          /* #8B1E2D */
+  --vermelho: oklch(0.48 0.17 25);       /* #B3262E */
+  --ouro: oklch(0.71 0.13 78);           /* #C99A2E */
+  --champagne: oklch(0.85 0.10 82);      /* #E7C873 */
+  --creme: oklch(0.96 0.018 85);         /* #F8F3E8 */
+  --branco-quente: oklch(0.99 0.008 85); /* #FFFDF8 */
+  --petroleo: oklch(0.27 0.04 230);      /* #102D3C */
+  --grafite: oklch(0.24 0.005 250);      /* #242424 */
+
+  --background: var(--creme);
+  --foreground: var(--grafite);
+  --card: var(--branco-quente);
+  --card-foreground: var(--grafite);
+  --popover: var(--branco-quente);
+  --popover-foreground: var(--grafite);
+  --primary: var(--bordo);
+  --primary-foreground: var(--branco-quente);
+  --secondary: var(--champagne);
+  --secondary-foreground: var(--grafite);
+  --muted: oklch(0.93 0.015 85);
+  --muted-foreground: oklch(0.45 0.02 250);
+  --accent: var(--ouro);
+  --accent-foreground: var(--branco-quente);
+  --destructive: oklch(0.55 0.20 27);
+  --destructive-foreground: var(--branco-quente);
+  --border: oklch(0.71 0.13 78 / 28%);
+  --input: oklch(0.71 0.13 78 / 30%);
+  --ring: var(--bordo);
+
+  --chart-1: var(--bordo);
+  --chart-2: var(--ouro);
+  --chart-3: var(--petroleo);
+  --chart-4: var(--champagne);
+  --chart-5: var(--vermelho);
+
+  --sidebar: var(--petroleo);
+  --sidebar-foreground: var(--branco-quente);
+  --sidebar-primary: var(--ouro);
+  --sidebar-primary-foreground: var(--petroleo);
+  --sidebar-accent: oklch(0.32 0.04 230);
+  --sidebar-accent-foreground: var(--branco-quente);
+  --sidebar-border: oklch(0.71 0.13 78 / 30%);
+  --sidebar-ring: var(--ouro);
+}
+
+.dark {
+  --background: var(--petroleo);
+  --foreground: var(--branco-quente);
+  --card: oklch(0.32 0.04 230);
+  --card-foreground: var(--branco-quente);
+  --popover: oklch(0.32 0.04 230);
+  --popover-foreground: var(--branco-quente);
+  --primary: var(--champagne);
+  --primary-foreground: var(--petroleo);
+  --secondary: oklch(0.35 0.05 230);
+  --secondary-foreground: var(--branco-quente);
+  --muted: oklch(0.35 0.04 230);
+  --muted-foreground: oklch(0.75 0.02 85);
+  --accent: var(--ouro);
+  --accent-foreground: var(--petroleo);
+  --border: oklch(1 0 0 / 12%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: var(--ouro);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    font-feature-settings: "ss01", "cv11";
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.01em;
+  }
+}
+
+@utility card-premium {
+  background-color: var(--card);
+  border: 1px solid color-mix(in oklab, var(--ouro) 35%, transparent);
+  border-radius: 1.25rem;
+  box-shadow: 0 18px 45px -20px color-mix(in oklab, var(--petroleo) 22%, transparent);
+}
+
+@utility filete-ouro {
+  border-bottom: 1px solid color-mix(in oklab, var(--ouro) 55%, transparent);
+}
