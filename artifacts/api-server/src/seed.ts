@@ -8,11 +8,23 @@ import {
   agendaTable,
   demandsTable,
   demandActivitiesTable,
+  votersTable,
+  messagesTable,
+  giftsTable,
+  messageTemplatesTable,
+  appointmentSlotsTable,
+  appointmentsTable,
 } from "@workspace/db";
 
 async function main() {
   console.log("Seeding Gabinete Digital data...");
 
+  await db.delete(messagesTable);
+  await db.delete(giftsTable);
+  await db.delete(messageTemplatesTable);
+  await db.delete(appointmentsTable);
+  await db.delete(appointmentSlotsTable);
+  await db.delete(votersTable);
   await db.delete(demandActivitiesTable);
   await db.delete(demandsTable);
   await db.delete(newsTable);
@@ -263,6 +275,207 @@ async function main() {
       });
     }
   }
+
+  // ----- Eleitores (CRM) -----
+  // Datas de aniversário próximas a 09/06 para popular "aniversariantes da semana".
+  const voters = [
+    {
+      name: "Maria Aparecida Ferreira",
+      whatsapp: "(15) 99999-2001",
+      email: "maria.ferreira@example.com",
+      birthDate: "1979-06-10",
+      address: "Rua das Acácias, 120",
+      neighborhood: "Éden",
+      notes: "Liderança comunitária do bairro Éden.",
+    },
+    {
+      name: "José Carlos Pereira",
+      whatsapp: "(15) 99999-2002",
+      email: "jose.pereira@example.com",
+      birthDate: "1965-06-12",
+      address: "Av. Central, 455",
+      neighborhood: "Centro",
+      notes: "Acompanha pautas de saúde.",
+    },
+    {
+      name: "Antônia Ribeiro",
+      whatsapp: "(15) 99999-2003",
+      email: "antonia.ribeiro@example.com",
+      birthDate: "1988-06-14",
+      address: "Rua dos Ipês, 78",
+      neighborhood: "Wanel Ville",
+      notes: "Solicitou brinde de aniversário.",
+    },
+    {
+      name: "Paulo Henrique Souza",
+      whatsapp: "(15) 99999-2004",
+      email: "paulo.souza@example.com",
+      birthDate: "1992-03-22",
+      address: "Rua do Comércio, 330",
+      neighborhood: "Zona Leste",
+      notes: null,
+    },
+    {
+      name: "Cláudia Regina Martins",
+      whatsapp: "(15) 99999-2005",
+      email: "claudia.martins@example.com",
+      birthDate: "1970-11-05",
+      address: "Rua das Flores, 12",
+      neighborhood: "Aparecidinha",
+      notes: "Participou da audiência pública de saúde.",
+    },
+    {
+      name: "Roberto Alves",
+      whatsapp: "(15) 99999-2006",
+      email: "roberto.alves@example.com",
+      birthDate: "1983-06-15",
+      address: "Av. Ipanema, 900",
+      neighborhood: "Ipanema",
+      notes: null,
+    },
+  ];
+  const insertedVoters = await db.insert(votersTable).values(voters).returning();
+  const voterId = (name: string) =>
+    insertedVoters.find((v) => v.name === name)?.id ?? insertedVoters[0].id;
+
+  // ----- Cartões de Agenda (appointment slots) -----
+  const fmt = (d: Date) => d.toISOString().slice(0, 10);
+  const day = (offset: number) => {
+    const d = new Date();
+    d.setDate(d.getDate() + offset);
+    return fmt(d);
+  };
+  const slots = [
+    { date: day(2), period: "manha", capacity: 5, bookedCount: 3, released: true, note: "Atendimento no gabinete." },
+    { date: day(2), period: "tarde", capacity: 5, bookedCount: 1, released: true, note: null },
+    { date: day(3), period: "manha", capacity: 5, bookedCount: 5, released: true, note: "Período lotado." },
+    { date: day(3), period: "tarde", capacity: 5, bookedCount: 0, released: false, note: "Aguardando liberação." },
+    { date: day(7), period: "manha", capacity: 6, bookedCount: 0, released: false, note: null },
+  ];
+  const insertedSlots = await db
+    .insert(appointmentSlotsTable)
+    .values(slots)
+    .returning();
+
+  // ----- Agendamentos (appointments) -----
+  await db.insert(appointmentsTable).values([
+    {
+      protocol: "ATD-2026-0001",
+      subject: "Solicitação de apoio para evento comunitário",
+      description: "Moradora deseja apoio do mandato para feira de saúde no bairro.",
+      slotId: insertedSlots[0]?.id ?? null,
+      preferredDate: day(2),
+      status: "agendado",
+      citizenName: "Maria Aparecida Ferreira",
+      citizenEmail: "maria.ferreira@example.com",
+      citizenPhone: "(15) 99999-2001",
+    },
+    {
+      protocol: "ATD-2026-0002",
+      subject: "Orientação sobre iluminação pública",
+      description: "Cidadão quer orientação sobre pedido de novos pontos de luz.",
+      slotId: insertedSlots[1]?.id ?? null,
+      preferredDate: day(2),
+      status: "agendado",
+      citizenName: "José Carlos Pereira",
+      citizenEmail: "jose.pereira@example.com",
+      citizenPhone: "(15) 99999-2002",
+    },
+    {
+      protocol: "ATD-2026-0003",
+      subject: "Reunião sobre praça do bairro",
+      description: "Pedido de reunião para tratar da revitalização da praça.",
+      slotId: null,
+      preferredDate: day(7),
+      status: "solicitado",
+      citizenName: "Antônia Ribeiro",
+      citizenEmail: "antonia.ribeiro@example.com",
+      citizenPhone: "(15) 99999-2003",
+    },
+  ]);
+
+  // ----- Modelos de mensagem -----
+  await db.insert(messageTemplatesTable).values([
+    {
+      name: "Feliz aniversário",
+      kind: "aniversario",
+      body: "Olá {nome}! O gabinete do vereador Cícero João deseja um feliz aniversário e um dia repleto de alegrias.",
+    },
+    {
+      name: "Atualização de demanda",
+      kind: "demanda_update",
+      body: "Olá {nome}, sua demanda teve uma atualização. Acompanhe pelo protocolo no nosso portal.",
+    },
+    {
+      name: "Aviso de brinde",
+      kind: "brinde",
+      body: "Olá {nome}, preparamos um brinde para você. Em breve entraremos em contato para a entrega.",
+    },
+  ]);
+
+  // ----- Mensagens (log) -----
+  await db.insert(messagesTable).values([
+    {
+      voterId: voterId("Maria Aparecida Ferreira"),
+      recipientName: "Maria Aparecida Ferreira",
+      recipientContact: "(15) 99999-2001",
+      channel: "whatsapp",
+      kind: "aniversario",
+      body: "Olá Maria! O gabinete deseja um feliz aniversário.",
+      status: "sent",
+      sentAt: new Date(),
+    },
+    {
+      voterId: voterId("José Carlos Pereira"),
+      recipientName: "José Carlos Pereira",
+      recipientContact: "(15) 99999-2002",
+      channel: "whatsapp",
+      kind: "demanda_update",
+      body: "Olá José, sua demanda foi encaminhada à Secretaria de Obras.",
+      status: "queued",
+    },
+    {
+      voterId: voterId("Antônia Ribeiro"),
+      recipientName: "Antônia Ribeiro",
+      recipientContact: "(15) 99999-2003",
+      channel: "whatsapp",
+      kind: "manual",
+      body: "Olá Antônia, confirmando sua presença na reunião desta semana.",
+      status: "queued",
+    },
+  ]);
+
+  // ----- Brindes -----
+  await db.insert(giftsTable).values([
+    {
+      voterId: voterId("Antônia Ribeiro"),
+      description: "Kit de aniversário com cartão personalizado",
+      deliveryType: "casa",
+      occasion: "aniversario",
+      status: "preparando",
+      scheduledFor: day(3),
+      notes: "Entregar no endereço residencial.",
+    },
+    {
+      voterId: voterId("Maria Aparecida Ferreira"),
+      description: "Cartão comemorativo do gabinete",
+      deliveryType: "gabinete",
+      occasion: "aniversario",
+      status: "entregue",
+      scheduledFor: day(-1),
+      notes: null,
+      deliveredAt: new Date(),
+    },
+    {
+      voterId: voterId("Roberto Alves"),
+      description: "Brinde institucional",
+      deliveryType: "casa",
+      occasion: "outro",
+      status: "pendente",
+      scheduledFor: day(5),
+      notes: null,
+    },
+  ]);
 
   console.log("Seed complete.");
   process.exit(0);
