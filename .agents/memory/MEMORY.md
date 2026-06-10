@@ -1,1 +1,1 @@
-- [Clerk appearance + Tailwind v4](clerk-tailwind-v4-appearance.md) — Clerk UI input/text styles need Tailwind v4 `!` suffix (e.g. `text-white!`); variables & baseTheme dark alone don't recolor the card.
+- [Clerk custom headless web auth](clerk-react-custom-headless-auth.md) — for single-screen email+password forms, import useSignIn/useSignUp from `@clerk/react/legacy`; default `@clerk/react` exports the signals API and lacks setActive/create/authenticateWithRedirect.

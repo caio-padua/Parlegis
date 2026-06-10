@@ -42,3 +42,9 @@ id = "VtIedZRXMM6bBMFgZJGrv"
 uri = "file://attached_assets/sorocaba_monument_gold.png"
 type = "image"
 title = "sorocaba monument gold"
+
+[[generated]]
+id = "osqjwHB5jDPSyZuXU_TEs"
+uri = "file://attached_assets/sorocaba_skyline_gold.png"
+type = "image"
+title = "sorocaba skyline gold"
