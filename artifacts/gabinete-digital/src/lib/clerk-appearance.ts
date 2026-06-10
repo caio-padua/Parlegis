@@ -16,10 +16,12 @@ export const clerkAppearance = {
     fontFamilyButtons: "Inter, system-ui, sans-serif",
   },
   elements: {
-    rootBox: "w-full",
-    card: "bg-transparent! shadow-none! border-0! p-0! w-full!",
-    headerTitle: "font-serif! text-2xl! text-white!",
-    headerSubtitle: "text-white/55!",
+    rootBox: "w-full! min-w-0!",
+    cardBox: "w-full! min-w-0!",
+    card: "bg-transparent! shadow-none! border-0! p-0! w-full! min-w-0!",
+    header: "hidden!",
+    headerTitle: "hidden!",
+    headerSubtitle: "hidden!",
     socialButtonsBlockButton:
       "h-11! rounded-xl! border! border-[rgba(201,154,46,0.4)]! bg-white/[0.04]! hover:bg-white/[0.09]! transition-colors",
     socialButtonsBlockButtonText: "text-white! font-medium!",

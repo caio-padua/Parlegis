@@ -36,3 +36,9 @@ id = "5nwFRXitll5vsWO0dHxSz"
 uri = "file://artifacts/gabinete-digital/public/seed/civic-sorocaba.png"
 type = "image"
 title = "generated_image"
+
+[[generated]]
+id = "VtIedZRXMM6bBMFgZJGrv"
+uri = "file://attached_assets/sorocaba_monument_gold.png"
+type = "image"
+title = "sorocaba monument gold"
