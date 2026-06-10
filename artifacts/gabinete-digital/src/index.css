@@ -320,3 +320,16 @@
     inset: -1px;
   }
 }
+@keyframes pulseGlow {
+  0%, 100% {
+    opacity: 0.25;
+    box-shadow: 0 0 0 0 hsl(var(--gold) / 0);
+  }
+  50% {
+    opacity: 1;
+    box-shadow: 0 0 10px 1px hsl(var(--gold) / 0.7);
+  }
+}
+.pulse-dot {
+  animation: pulseGlow 2.6s ease-in-out infinite;
+}

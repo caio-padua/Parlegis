@@ -50,6 +50,7 @@ Public: home, biografia, mandato em números, projetos (lei/ofícios), demandas 
 
 ## Gotchas
 
+- Login/access screen (`access-gateway.tsx`) must follow the "PAWARDS MEDCORE" reference (`attached_assets/image_178112356*.png`): standalone full-screen dark page with NO site header/footer (excluded via route check in `Layout.tsx`), left brand lockup ("Cícero João" matte-gold gradient + "Vereador" between two filete lines), gold italic quote, NO city image / NO "Sorocaba", system credits (PARLEGIS / PADCON Platform) bottom-RIGHT corner, slow-pulsing status dots (`.pulse-dot` in `index.css`), bottom band of boxed security badges. Do not reintroduce site chrome or imagery on auth pages.
 - After wiring routes or editing server code, restart the `artifacts/api-server` workflow — the dev script builds once on start, so a running instance can serve a stale build (404s on new routes).
 - Design subagents cannot run the terminal; always run `pnpm --filter @workspace/gabinete-digital run typecheck` yourself after they report "done".
 - See `.agents/memory/` for Clerk `@clerk/react` (`Show`, not SignedIn/SignedOut) and Orval hook (`queryKey` required; filtered list hooks take params first) gotchas.
