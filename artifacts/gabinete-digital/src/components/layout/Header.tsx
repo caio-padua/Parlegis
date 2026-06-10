@@ -4,6 +4,7 @@ import { Show, useClerk, useUser } from "@clerk/react";
 import { useGetCurrentUser, getGetCurrentUserQueryKey } from "@workspace/api-client-react";
 import { Button } from "@/components/ui/button";
 import { Menu, X, Send, UserRound, ShieldCheck, LogOut } from "lucide-react";
+import ciceroSymbol from "@assets/cicero_symbol.png";
 
 export function Header() {
   const [location] = useLocation();
@@ -31,15 +32,17 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 w-full bg-secondary text-secondary-foreground filete-ouro shadow-sm">
       <div className="container mx-auto px-4 md:px-6 h-20 flex items-center justify-between gap-4">
-        <Link href="/" className="flex items-center gap-3 group">
-          <span className="grid h-11 w-11 place-items-center rounded-full bg-primary text-accent font-serif text-lg font-bold ring-1 ring-[hsl(var(--gold)/0.6)]">
-            CJ
-          </span>
+        <Link href="/" className="flex shrink-0 items-center gap-2.5 group">
+          <img
+            src={ciceroSymbol}
+            alt="Símbolo Cícero João"
+            className="h-12 w-auto shrink-0 drop-shadow-[0_2px_6px_rgba(0,0,0,0.45)] transition-transform group-hover:scale-105"
+          />
           <span className="hidden sm:flex flex-col leading-tight">
-            <span className="font-serif text-lg font-semibold tracking-tight text-white">
+            <span className="whitespace-nowrap font-serif text-lg font-semibold tracking-tight text-white">
               Cícero João
             </span>
-            <span className="text-[11px] uppercase tracking-[0.18em] text-accent/90">
+            <span className="whitespace-nowrap text-[11px] uppercase tracking-[0.18em] text-accent/90">
               Vereador · Sorocaba
             </span>
           </span>

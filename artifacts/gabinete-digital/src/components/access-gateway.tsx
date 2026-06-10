@@ -1,6 +1,6 @@
 import React from "react";
 import { ShieldCheck, Lock, FileCheck2, KeyRound } from "lucide-react";
-import logoCicero from "@assets/LOGO_CICERO_14_1781115177454.png";
+import logoCicero from "@assets/cicero_logo_full.png";
 
 type Area = "eleitor" | "admin";
 
@@ -44,25 +44,24 @@ export function AccessGateway({
         : "Entre para acompanhar suas demandas e atendimentos.";
 
   return (
-    <div className="relative min-h-[calc(100vh-5rem)] w-full overflow-hidden bg-secondary text-secondary-foreground">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,hsl(var(--gold)/0.10),transparent_55%)]" aria-hidden />
+    <div
+      className="relative min-h-[calc(100vh-5rem)] w-full overflow-hidden text-secondary-foreground"
+      style={{
+        background:
+          "radial-gradient(circle at 28% 22%, hsl(200 55% 13%), hsl(200 62% 6%) 55%, hsl(200 65% 3%) 100%)",
+      }}
+    >
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_85%,hsl(var(--gold)/0.08),transparent_50%)]" aria-hidden />
       <div className="absolute inset-x-0 top-0 h-px bg-[hsl(var(--gold)/0.55)]" aria-hidden />
 
-      <div className="relative mx-auto grid max-w-6xl gap-10 px-4 py-12 sm:px-6 lg:grid-cols-2 lg:gap-16 lg:py-20">
+      <div className="relative mx-auto grid max-w-6xl items-center gap-10 px-4 py-12 sm:px-6 lg:grid-cols-2 lg:gap-16 lg:py-20">
         {/* Brand / institutional side */}
-        <div className="flex flex-col justify-center">
-          <div className="flex items-center gap-4">
-            <img
-              src={logoCicero}
-              alt="Cícero João · Vereador de Sorocaba"
-              className="h-28 w-28 rounded-2xl object-cover ring-1 ring-[hsl(var(--gold)/0.55)] shadow-[0_0_40px_hsl(var(--gold)/0.18)] sm:h-32 sm:w-32"
-            />
-            <div className="leading-tight">
-              <p className="font-serif text-xl font-semibold text-white">Gabinete Digital</p>
-              <p className="text-[11px] uppercase tracking-[0.2em] text-accent/90">Cícero João · Sorocaba</p>
-              <p className="mt-2 text-[11px] italic text-secondary-foreground/70">Servir com sabedoria. Conduzir com firmeza.</p>
-            </div>
-          </div>
+        <div className="flex flex-col items-center text-center lg:items-start lg:text-left">
+          <img
+            src={logoCicero}
+            alt="Cícero João · Vereador de Sorocaba"
+            className="w-64 max-w-full drop-shadow-[0_0_55px_hsl(var(--gold)/0.22)] sm:w-72 lg:w-80"
+          />
 
           <p className="mt-8 text-xs font-semibold uppercase tracking-[0.22em] text-accent">
             Portal de Mandato
