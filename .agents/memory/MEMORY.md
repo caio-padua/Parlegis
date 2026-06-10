@@ -1,3 +1,1 @@
-- [Clerk @clerk/react + Orval hooks](clerk-react-and-orval-hooks.md) — @clerk/react uses `Show` not SignedIn/SignedOut; generated query hooks require `queryKey`, filtered list hooks take params as 1st arg.
-- [First-admin bootstrap race](jit-user-first-admin-bootstrap.md) — make "first user = admin" atomic with a pg advisory-lock transaction + onConflictDoNothing.
-- [Express route ordering](express-route-ordering.md) — register literal sub-paths (e.g. /admin/voters/birthdays) BEFORE /:id routes or they get shadowed.
+- [Clerk appearance + Tailwind v4](clerk-tailwind-v4-appearance.md) — Clerk UI input/text styles need Tailwind v4 `!` suffix (e.g. `text-white!`); variables & baseTheme dark alone don't recolor the card.

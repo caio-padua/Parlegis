@@ -6,6 +6,7 @@ import { ptBR } from "@clerk/localizations";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Layout } from "@/components/layout/Layout";
+import { clerkAppearance } from "@/lib/clerk-appearance";
 import NotFound from "@/pages/not-found";
 
 // Page Imports
@@ -78,20 +79,10 @@ function App() {
       proxyUrl={CLERK_PROXY_URL}
       localization={ptBR}
       appearance={{
+        ...clerkAppearance,
         layout: {
           socialButtonsPlacement: "bottom",
           socialButtonsVariant: "blockButton",
-        },
-        elements: {
-          formButtonPrimary: 
-            "bg-[#8B1E2D] hover:bg-[#8B1E2D]/90 text-white font-sans rounded-md text-sm font-medium transition-colors shadow-sm",
-          card: "bg-white shadow-xl border border-gray-100 rounded-xl",
-          headerTitle: "font-serif text-2xl font-bold text-[#102D3C]",
-          headerSubtitle: "font-sans text-gray-500",
-          socialButtonsBlockButton: "border-gray-200 hover:bg-gray-50 text-gray-700 font-sans font-medium",
-          formFieldLabel: "font-sans font-medium text-gray-700",
-          formFieldInput: "font-sans rounded-md border-gray-300 focus:ring-[#8B1E2D] focus:border-[#8B1E2D]",
-          footerActionLink: "text-[#8B1E2D] hover:text-[#8B1E2D]/80 font-sans font-medium",
         },
       }}
     >
