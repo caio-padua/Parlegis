@@ -51,9 +51,12 @@ function clerkError(err: unknown): string {
 }
 
 const fieldClass =
-  "h-12 w-full rounded-xl border border-[hsl(var(--gold)/0.28)] bg-white/[0.04] px-4 text-white placeholder:text-white/35 outline-none transition-colors focus:border-[#C99A2E] focus:ring-2 focus:ring-[#C99A2E]/30";
+  "h-14 w-full rounded-[14px] border border-[#E0AD4C]/30 bg-[#0C171C] px-4 text-[15px] text-white outline-none transition placeholder:text-[#D9D9D9]/40 focus:border-[#F7C965]/75 focus:shadow-[0_0_0_3px_rgba(224,173,76,0.12)]";
 
-const labelClass = "mb-1.5 flex items-center gap-2 text-sm font-medium text-white/75";
+const labelClass = "mb-2 flex items-center gap-2 text-sm font-medium text-[#D9D9D9]";
+
+const primaryButtonClass =
+  "flex h-[60px] w-full items-center justify-center gap-2 rounded-[14px] bg-[linear-gradient(180deg,#F7C965_0%,#E0AD4C_48%,#D49733_100%)] font-bold text-[#081114] shadow-[0_12px_30px_rgba(224,173,76,0.24),inset_0_1px_0_rgba(255,255,255,0.35)] transition hover:-translate-y-px hover:brightness-105 disabled:cursor-not-allowed disabled:opacity-70";
 
 export function AuthForm({ mode, area }: { mode: "sign-in" | "sign-up"; area: Area }) {
   const [, setLocation] = useLocation();
@@ -224,47 +227,45 @@ export function AuthForm({ mode, area }: { mode: "sign-in" | "sign-up"; area: Ar
     : `/sign-in${area === "admin" ? "?area=admin" : ""}`;
 
   return (
-    <div className="relative w-full max-w-md rounded-[1.75rem] border border-[hsl(var(--gold)/0.35)] bg-[rgba(10,26,36,0.72)] px-7 pb-8 pt-14 shadow-[0_40px_100px_-30px_rgba(0,0,0,0.92)] backdrop-blur-xl sm:px-9">
-      {/* Gold accent ribbon */}
-      <span
-        className="pointer-events-none absolute inset-x-10 top-0 h-[2px] bg-gradient-to-r from-transparent via-[#C99A2E] to-transparent"
-        aria-hidden
-      />
+    <div className="relative w-full max-w-[520px] rounded-[28px] border border-[#E0AD4C]/45 bg-[linear-gradient(180deg,rgba(14,24,32,0.96),rgba(7,16,20,0.96))] px-7 pb-10 pt-12 shadow-[0_28px_80px_rgba(0,0,0,0.55),inset_0_1px_0_rgba(255,255,255,0.05)] sm:px-10">
       {/* Shield emblem overlapping the top border */}
-      <span className="absolute -top-7 left-1/2 flex h-14 w-14 -translate-x-1/2 items-center justify-center rounded-full border border-[hsl(var(--gold)/0.5)] bg-[#0b1d28] shadow-[0_0_30px_-6px_rgba(201,154,46,0.75)]">
-        <ShieldCheck className="h-6 w-6 text-[#E7C873]" />
-      </span>
+      <div className="absolute left-1/2 top-[-29px] flex h-[58px] w-[58px] -translate-x-1/2 items-center justify-center rounded-full border border-[#E0AD4C]/75 bg-[linear-gradient(180deg,#1A2529,#081114)] shadow-[0_0_28px_rgba(224,173,76,0.28)]">
+        <ShieldCheck className="h-7 w-7 text-[#F7C965]" />
+      </div>
 
       <div className="text-center">
-        <h2 className="font-serif text-3xl text-white">{title}</h2>
-        <p className="mt-1.5 text-sm text-white/55">{subtitle}</p>
+        <h2 className="font-['Playfair_Display'] text-[40px] font-bold leading-none text-white">
+          {title}
+        </h2>
+        <p className="mt-3 text-[15px] font-medium text-[#E0AD4C]">{subtitle}</p>
+        <div className="mx-auto mt-4 h-px w-36 bg-gradient-to-r from-transparent via-[#F7C965] to-transparent shadow-[0_0_18px_rgba(247,201,101,0.48)]" />
       </div>
 
       {!loaded ? (
         <div className="flex justify-center py-10">
-          <Loader2 className="h-6 w-6 animate-spin text-[#C99A2E]" />
+          <Loader2 className="h-6 w-6 animate-spin text-[#E0AD4C]" />
         </div>
       ) : view === "main" ? (
         <>
           <button
             type="button"
             onClick={handleGoogle}
-            className="mt-7 flex h-12 w-full items-center justify-center gap-3 rounded-xl border border-[hsl(var(--gold)/0.35)] bg-white/[0.04] text-sm font-medium text-white transition-colors hover:bg-white/[0.09]"
+            className="mt-8 flex h-14 w-full items-center justify-center gap-3 rounded-[12px] border border-[#E0AD4C]/45 bg-[#09161C]/90 text-[15px] font-medium text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] transition hover:border-[#F7C965]/75 hover:bg-[#0E1820] hover:shadow-[0_0_18px_rgba(224,173,76,0.16)]"
           >
             <GoogleIcon className="h-5 w-5" />
             Continuar com Google
           </button>
 
-          <div className="my-5 flex items-center gap-4">
-            <span className="h-px flex-1 bg-white/10" aria-hidden />
-            <span className="text-[11px] uppercase tracking-[0.3em] text-white/40">ou</span>
-            <span className="h-px flex-1 bg-white/10" aria-hidden />
+          <div className="my-7 flex items-center gap-4">
+            <span className="h-px flex-1 bg-[#E0AD4C]/20" aria-hidden />
+            <span className="text-sm uppercase tracking-[0.2em] text-[#D9D9D9]/60">ou</span>
+            <span className="h-px flex-1 bg-[#E0AD4C]/20" aria-hidden />
           </div>
 
           <form onSubmit={handleMainSubmit} className="space-y-4">
             <div>
               <label htmlFor="auth-email" className={labelClass}>
-                <Mail className="h-4 w-4 text-[#C99A2E]" />
+                <Mail className="h-4 w-4 text-[#E0AD4C]" />
                 E-mail
               </label>
               <input
@@ -281,7 +282,7 @@ export function AuthForm({ mode, area }: { mode: "sign-in" | "sign-up"; area: Ar
 
             <div>
               <label htmlFor="auth-password" className={labelClass}>
-                <Lock className="h-4 w-4 text-[#C99A2E]" />
+                <Lock className="h-4 w-4 text-[#E0AD4C]" />
                 Senha
               </label>
               <div className="relative">
@@ -307,13 +308,13 @@ export function AuthForm({ mode, area }: { mode: "sign-in" | "sign-up"; area: Ar
             </div>
 
             {isSignIn && (
-              <div className="flex items-center justify-between pt-0.5">
-                <label className="flex cursor-pointer items-center gap-2 text-sm text-white/70">
+              <div className="flex items-center justify-between pt-1 text-sm">
+                <label className="flex cursor-pointer items-center gap-2 text-[#D9D9D9]">
                   <input
                     type="checkbox"
                     checked={remember}
                     onChange={(e) => setRemember(e.target.checked)}
-                    className="h-4 w-4 rounded accent-[#C99A2E]"
+                    className="h-4 w-4 rounded accent-[#E0AD4C]"
                   />
                   Lembrar de mim
                 </label>
@@ -323,7 +324,7 @@ export function AuthForm({ mode, area }: { mode: "sign-in" | "sign-up"; area: Ar
                     setError(null);
                     setView("reset-request");
                   }}
-                  className="text-sm text-[#E7C873] transition-colors hover:text-[#C99A2E]"
+                  className="font-medium text-[#E0AD4C] underline underline-offset-4 transition-colors hover:text-[#F7C965]"
                 >
                   Esqueci minha senha
                 </button>
@@ -335,28 +336,38 @@ export function AuthForm({ mode, area }: { mode: "sign-in" | "sign-up"; area: Ar
             <button
               type="submit"
               disabled={submitting}
-              className="mt-2 flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#C99A2E] to-[#E7C873] font-semibold text-[#10222C] shadow-[0_14px_34px_-12px_rgba(201,154,46,0.85)] transition hover:brightness-105 disabled:cursor-not-allowed disabled:opacity-70"
+              className={`mt-3 flex h-[60px] w-full items-center rounded-[14px] bg-[linear-gradient(180deg,#F7C965_0%,#E0AD4C_48%,#D49733_100%)] px-7 font-bold text-[#081114] shadow-[0_12px_30px_rgba(224,173,76,0.24),inset_0_1px_0_rgba(255,255,255,0.35)] transition hover:-translate-y-px hover:brightness-105 disabled:cursor-not-allowed disabled:opacity-70 ${
+                submitting ? "justify-center" : "justify-between"
+              }`}
             >
               {submitting ? (
                 <Loader2 className="h-5 w-5 animate-spin" />
               ) : (
                 <>
-                  <ShieldCheck className="h-5 w-5" />
-                  {isSignIn ? "Entrar no painel" : "Criar acesso"}
-                  <ArrowRight className="h-4 w-4" />
+                  <span className="flex items-center gap-3 text-[17px]">
+                    <ShieldCheck className="h-5 w-5" />
+                    {isSignIn ? "Entrar no painel" : "Criar acesso"}
+                  </span>
+                  <ArrowRight className="h-5 w-5" />
                 </>
               )}
             </button>
           </form>
 
-          <div className="mt-6 flex items-center justify-center gap-1.5 text-sm text-white/55">
+          <div className="my-7 flex items-center gap-4">
+            <span className="h-px flex-1 bg-[#E0AD4C]/18" aria-hidden />
+            <Lock className="h-4 w-4 text-[#E0AD4C]/80" />
+            <span className="h-px flex-1 bg-[#E0AD4C]/18" aria-hidden />
+          </div>
+
+          <div className="flex items-center justify-center gap-2 text-sm text-[#D9D9D9]/75">
             {isSignIn ? "Não possui uma conta?" : "Já possui acesso?"}
             <Link
               href={otherHref}
-              className="inline-flex items-center gap-1 font-medium text-[#E7C873] transition-colors hover:text-[#C99A2E]"
+              className="inline-flex items-center gap-1.5 font-semibold text-[#E0AD4C] transition-colors hover:text-[#F7C965]"
             >
               {isSignIn ? "Solicitar acesso" : "Entrar"}
-              <ArrowRight className="h-3.5 w-3.5" />
+              <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
         </>
@@ -364,7 +375,7 @@ export function AuthForm({ mode, area }: { mode: "sign-in" | "sign-up"; area: Ar
         <form onSubmit={handleVerify} className="mt-7 space-y-4">
           <div>
             <label htmlFor="auth-code" className={labelClass}>
-              <KeyRound className="h-4 w-4 text-[#C99A2E]" />
+              <KeyRound className="h-4 w-4 text-[#E0AD4C]" />
               Código de verificação
             </label>
             <input
@@ -381,7 +392,7 @@ export function AuthForm({ mode, area }: { mode: "sign-in" | "sign-up"; area: Ar
           <button
             type="submit"
             disabled={submitting}
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#C99A2E] to-[#E7C873] font-semibold text-[#10222C] shadow-[0_14px_34px_-12px_rgba(201,154,46,0.85)] transition hover:brightness-105 disabled:opacity-70"
+            className={primaryButtonClass}
           >
             {submitting ? <Loader2 className="h-5 w-5 animate-spin" /> : "Confirmar"}
           </button>
@@ -390,7 +401,7 @@ export function AuthForm({ mode, area }: { mode: "sign-in" | "sign-up"; area: Ar
         <form onSubmit={handleResetRequest} className="mt-7 space-y-4">
           <div>
             <label htmlFor="reset-email" className={labelClass}>
-              <Mail className="h-4 w-4 text-[#C99A2E]" />
+              <Mail className="h-4 w-4 text-[#E0AD4C]" />
               E-mail
             </label>
             <input
@@ -408,7 +419,7 @@ export function AuthForm({ mode, area }: { mode: "sign-in" | "sign-up"; area: Ar
           <button
             type="submit"
             disabled={submitting}
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#C99A2E] to-[#E7C873] font-semibold text-[#10222C] shadow-[0_14px_34px_-12px_rgba(201,154,46,0.85)] transition hover:brightness-105 disabled:opacity-70"
+            className={primaryButtonClass}
           >
             {submitting ? <Loader2 className="h-5 w-5 animate-spin" /> : "Enviar código"}
           </button>
@@ -427,7 +438,7 @@ export function AuthForm({ mode, area }: { mode: "sign-in" | "sign-up"; area: Ar
         <form onSubmit={handleResetConfirm} className="mt-7 space-y-4">
           <div>
             <label htmlFor="reset-code" className={labelClass}>
-              <KeyRound className="h-4 w-4 text-[#C99A2E]" />
+              <KeyRound className="h-4 w-4 text-[#E0AD4C]" />
               Código de verificação
             </label>
             <input
@@ -442,7 +453,7 @@ export function AuthForm({ mode, area }: { mode: "sign-in" | "sign-up"; area: Ar
           </div>
           <div>
             <label htmlFor="reset-newpw" className={labelClass}>
-              <Lock className="h-4 w-4 text-[#C99A2E]" />
+              <Lock className="h-4 w-4 text-[#E0AD4C]" />
               Nova senha
             </label>
             <input
@@ -460,7 +471,7 @@ export function AuthForm({ mode, area }: { mode: "sign-in" | "sign-up"; area: Ar
           <button
             type="submit"
             disabled={submitting}
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#C99A2E] to-[#E7C873] font-semibold text-[#10222C] shadow-[0_14px_34px_-12px_rgba(201,154,46,0.85)] transition hover:brightness-105 disabled:opacity-70"
+            className={primaryButtonClass}
           >
             {submitting ? <Loader2 className="h-5 w-5 animate-spin" /> : "Redefinir senha"}
           </button>

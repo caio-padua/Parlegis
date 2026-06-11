@@ -46,6 +46,7 @@ Public: home, biografia, mandato em números, projetos (lei/ofícios), demandas 
 
 - All UI copy in Brazilian Portuguese. No emojis anywhere.
 - Design system "PSB Institucional Premium": bordô #8B1E2D, vermelho #B3262E, ouro velho #C99A2E, champagne #E7C873, creme #F8F3E8, branco quente #FFFDF8, grafite #242424, azul petróleo #102D3C. Fonts: Playfair Display (titles) + Inter (body). Classic, popular, institutional.
+- The login/access screen is a SEPARATE design system from the rest of the site — it follows the user's "Tela de Login Premium" handoff: near-black blue bg #0B1417, brighter golds #E0AD4C (main) / #F7C965 (light) / #D49733 (deep); fonts Cormorant Garamond (name "Cícero João"), Cinzel (VEREADOR + PARLEGIS/PADCON), Playfair Display ("Entrar"). Do NOT swap these for the site PSB palette/fonts; they are deliberately distinct.
 - Do not generate an AI portrait of the real named person; use institutional/civic imagery for content.
 
 ## Gotchas

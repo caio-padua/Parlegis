@@ -1,0 +1,1344 @@
+# HANDOFF PARA REPLIT AI
+
+## Tela de Login Premium - Cícero João Vereador - Sorocaba
+
+### Stack desejada: React + TypeScript + Tailwind CSS
+
+---
+
+## 1. Objetivo visual da tela
+
+Criar uma tela de login institucional, sofisticada, premium e segura para o sistema:
+
+**Gabinete Digital Cícero João**
+**Vereador por Sorocaba**
+
+A tela deve transmitir:
+
+* Autoridade institucional.
+* Segurança digital.
+* Prestígio político.
+* Tecnologia.
+* Transparência.
+* Elegância.
+* Identidade visual premium em azul petróleo, preto profundo e dourado escovado.
+
+A tela não pode parecer genérica.
+Ela deve parecer uma plataforma própria, exclusiva, desenvolvida para um gabinete digital moderno.
+
+---
+
+# 2. Estrutura geral da tela
+
+A tela deve ocupar **100% da altura e largura do navegador**.
+
+Usar layout desktop com duas colunas principais:
+
+## Coluna esquerda - Branding institucional
+
+Largura aproximada: **58% da tela**
+
+Conteúdo:
+
+1. Monograma CJ grande em dourado 3D.
+2. Nome “Cícero João” abaixo.
+3. Texto “VEREADOR” com espaçamento entre letras.
+4. Skyline ou monumentos de Sorocaba em dourado escovado.
+5. Frase institucional:
+   **“Servir com sabedoria. Conduzir com firmeza.”**
+
+## Coluna direita - Card de login
+
+Largura aproximada: **42% da tela**
+
+Conteúdo:
+
+1. Card escuro com borda dourada.
+2. Ícone de escudo no topo.
+3. Título “Entrar”.
+4. Subtítulo “Acesse o Gabinete Digital do Vereador”.
+5. Botão “Continuar com Google”.
+6. Separador “ou”.
+7. Campo de e-mail.
+8. Campo de senha.
+9. Checkbox “Lembrar de mim”.
+10. Link “Esqueci minha senha”.
+11. Botão principal “Entrar no painel”.
+12. Link “Solicitar acesso”.
+
+---
+
+# 3. Paleta de cores oficial
+
+Usar estas cores como tokens principais:
+
+```css
+:root {
+  --bg: #0B1417;
+  --panel: #0E1820;
+  --panel-soft: #09161C;
+  --input-bg: #0C171C;
+
+  --gold-light: #F7C965;
+  --gold-main: #E0AD4C;
+  --gold-base: #D49733;
+  --gold-deep: #986A23;
+
+  --border-gold: rgba(224, 173, 76, 0.35);
+  --border-gold-strong: rgba(224, 173, 76, 0.65);
+
+  --text-main: #FFFFFF;
+  --text-soft: #D9D9D9;
+  --text-muted: #9CA3AF;
+
+  --success: #44D26F;
+  --warning: #F7C965;
+}
+```
+
+## Uso das cores
+
+### Fundo principal
+
+Usar:
+
+```css
+#0B1417
+```
+
+Com gradientes suaves:
+
+```css
+background:
+  radial-gradient(circle at 28% 20%, rgba(224,173,76,0.14), transparent 28%),
+  radial-gradient(circle at 70% 55%, rgba(14,24,32,0.95), transparent 42%),
+  linear-gradient(135deg, #081013 0%, #0B1417 45%, #061014 100%);
+```
+
+### Dourado principal
+
+Usar nos botões, bordas, ícones e textos nobres:
+
+```css
+#E0AD4C
+```
+
+### Dourado claro para brilho
+
+Usar em efeitos de luz:
+
+```css
+#F7C965
+```
+
+### Dourado profundo para profundidade
+
+Usar em gradientes:
+
+```css
+#986A23
+```
+
+---
+
+# 4. Fontes recomendadas
+
+Importar no projeto:
+
+```tsx
+import '@fontsource/playfair-display/700.css';
+import '@fontsource/cinzel/600.css';
+import '@fontsource/cormorant-garamond/700.css';
+import '@fontsource/inter/400.css';
+import '@fontsource/inter/500.css';
+import '@fontsource/inter/600.css';
+```
+
+## Uso das fontes
+
+### Nome “Cícero João”
+
+Preferência:
+
+```css
+font-family: "Cormorant Garamond", serif;
+font-weight: 700;
+```
+
+Alternativa:
+
+```css
+font-family: "Cinzel", serif;
+```
+
+### Título “Entrar”
+
+```css
+font-family: "Playfair Display", serif;
+font-weight: 700;
+```
+
+### Textos da interface, inputs e botões
+
+```css
+font-family: "Inter", sans-serif;
+```
+
+### Texto “VEREADOR”
+
+```css
+font-family: "Cinzel", serif;
+letter-spacing: 0.42em;
+font-weight: 600;
+```
+
+---
+
+# 5. Elementos visuais obrigatórios
+
+## 5.1 Monograma CJ com pomba
+
+O monograma deve ficar na coluna esquerda, superior/central.
+
+Características:
+
+* Grande.
+* Em dourado 3D.
+* Com efeito de metal escovado.
+* Com brilho suave.
+* Não usar brilho neon exagerado.
+* O símbolo deve parecer nobre, institucional e impositivo.
+* A pomba deve estar integrada ao “J”, como identidade central.
+
+Tamanho sugerido:
+
+```css
+width: clamp(260px, 28vw, 420px);
+```
+
+Efeito sugerido:
+
+```css
+filter:
+  drop-shadow(0 0 24px rgba(247, 201, 101, 0.28))
+  drop-shadow(0 18px 38px rgba(0, 0, 0, 0.55));
+```
+
+---
+
+## 5.2 Nome Cícero João
+
+Deve ficar abaixo do monograma.
+
+Texto:
+
+```text
+Cícero João
+```
+
+Características:
+
+* Serifado.
+* Dourado.
+* Imponente.
+* Centralizado.
+* Com leve sombra.
+* Tamanho grande.
+
+CSS sugerido:
+
+```css
+font-family: "Cormorant Garamond", serif;
+font-size: clamp(58px, 5.5vw, 92px);
+font-weight: 700;
+line-height: 0.9;
+color: #E0AD4C;
+text-shadow:
+  0 2px 0 #986A23,
+  0 0 22px rgba(247, 201, 101, 0.28);
+```
+
+---
+
+## 5.3 Texto VEREADOR
+
+Texto:
+
+```text
+VEREADOR
+```
+
+Características:
+
+* Letras espaçadas.
+* Em dourado.
+* Centralizado.
+* Com duas linhas laterais finas.
+
+CSS sugerido:
+
+```css
+font-family: "Cinzel", serif;
+letter-spacing: 0.42em;
+font-size: 18px;
+color: #F7C965;
+```
+
+As linhas laterais podem ser criadas com pseudo-elementos ou spans:
+
+```tsx
+<div className="flex items-center justify-center gap-5">
+  <span className="h-px w-20 bg-gradient-to-r from-transparent to-[#E0AD4C]" />
+  <span className="tracking-[0.42em] text-[#F7C965]">VEREADOR</span>
+  <span className="h-px w-20 bg-gradient-to-l from-transparent to-[#E0AD4C]" />
+</div>
+```
+
+---
+
+## 5.4 Skyline ou monumento de Sorocaba
+
+Abaixo do nome, inserir um conjunto visual representando Sorocaba.
+
+Pode ser:
+
+* Skyline de Sorocaba.
+* Monumento público.
+* Paço Municipal.
+* Ponte estaiada.
+* Relógio/torre ou prédio institucional.
+* Composição arquitetônica em dourado escovado.
+
+Características:
+
+* Em dourado escovado.
+* Baixa opacidade no fundo, mas com destaque na parte inferior.
+* Visual institucional.
+* Não parecer turístico genérico.
+* Não preencher demais a tela.
+* Deve parecer uma gravura 3D dourada.
+
+Tamanho sugerido:
+
+```css
+width: min(720px, 88%);
+```
+
+Posição:
+
+```css
+margin-top: 24px;
+```
+
+Efeito:
+
+```css
+filter:
+  drop-shadow(0 0 18px rgba(224, 173, 76, 0.22))
+  drop-shadow(0 12px 28px rgba(0, 0, 0, 0.45));
+```
+
+---
+
+## 5.5 Frase institucional
+
+Texto exato:
+
+```text
+“Servir com sabedoria. Conduzir com firmeza.”
+```
+
+Características:
+
+* Em itálico elegante.
+* Dourado claro.
+* Centralizado.
+* Abaixo do skyline.
+* Com pequeno brilho central inferior.
+
+CSS:
+
+```css
+font-family: "Cormorant Garamond", serif;
+font-style: italic;
+font-size: 26px;
+color: #F7C965;
+text-shadow: 0 0 16px rgba(247, 201, 101, 0.25);
+```
+
+---
+
+# 6. Card de login
+
+## 6.1 Posição do card
+
+O card deve ficar na coluna direita, alinhado verticalmente ao centro.
+
+Largura:
+
+```css
+width: 520px;
+max-width: 100%;
+```
+
+Padding:
+
+```css
+padding: 40px 42px;
+```
+
+Border radius:
+
+```css
+border-radius: 28px;
+```
+
+Background:
+
+```css
+background:
+  linear-gradient(180deg, rgba(14,24,32,0.96), rgba(7,16,20,0.96));
+```
+
+Borda:
+
+```css
+border: 1px solid rgba(224, 173, 76, 0.45);
+```
+
+Sombra:
+
+```css
+box-shadow:
+  0 28px 80px rgba(0, 0, 0, 0.55),
+  inset 0 1px 0 rgba(255, 255, 255, 0.05),
+  0 0 0 1px rgba(247, 201, 101, 0.08);
+```
+
+---
+
+## 6.2 Ícone do topo do card
+
+No topo do card, criar um círculo com ícone de escudo.
+
+Posição:
+
+* Centralizado.
+* Metade para fora do card, acima da borda superior.
+
+Tamanho:
+
+```css
+width: 58px;
+height: 58px;
+```
+
+CSS:
+
+```css
+position: absolute;
+top: -29px;
+left: 50%;
+transform: translateX(-50%);
+border-radius: 999px;
+background: linear-gradient(180deg, #1A2529, #081114);
+border: 1px solid rgba(224, 173, 76, 0.75);
+box-shadow: 0 0 28px rgba(224, 173, 76, 0.28);
+```
+
+Ícone:
+
+* Usar `ShieldCheck` do lucide-react.
+* Cor: `#F7C965`.
+* Tamanho: 26px.
+
+---
+
+## 6.3 Título do card
+
+Texto:
+
+```text
+Entrar
+```
+
+CSS:
+
+```css
+font-family: "Playfair Display", serif;
+font-size: 46px;
+font-weight: 700;
+color: #FFFFFF;
+text-align: center;
+```
+
+---
+
+## 6.4 Subtítulo
+
+Texto:
+
+```text
+Acesse o Gabinete Digital do Vereador
+```
+
+CSS:
+
+```css
+font-size: 16px;
+color: #E0AD4C;
+text-align: center;
+```
+
+---
+
+## 6.5 Botão Google
+
+Texto:
+
+```text
+Continuar com Google
+```
+
+Características:
+
+* Fundo escuro.
+* Borda dourada discreta.
+* Ícone colorido do Google.
+* Altura de 56px.
+* Arredondado.
+* Não usar botão branco padrão.
+* Deve parecer integrado ao design premium.
+
+CSS:
+
+```css
+height: 56px;
+border-radius: 12px;
+background: rgba(9, 22, 28, 0.9);
+border: 1px solid rgba(224, 173, 76, 0.45);
+color: #FFFFFF;
+font-weight: 500;
+box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+```
+
+Hover:
+
+```css
+background: rgba(14, 24, 32, 1);
+border-color: rgba(247, 201, 101, 0.75);
+box-shadow: 0 0 18px rgba(224, 173, 76, 0.16);
+```
+
+---
+
+## 6.6 Separador “ou”
+
+Criar uma linha horizontal com “ou” no centro.
+
+CSS:
+
+```tsx
+<div className="my-7 flex items-center gap-4">
+  <div className="h-px flex-1 bg-[#E0AD4C]/20" />
+  <span className="text-sm text-[#D9D9D9]/60">ou</span>
+  <div className="h-px flex-1 bg-[#E0AD4C]/20" />
+</div>
+```
+
+---
+
+## 6.7 Campos de input
+
+Campos necessários:
+
+1. E-mail.
+2. Senha.
+
+### Label do e-mail
+
+Texto:
+
+```text
+E-mail
+```
+
+Ícone:
+
+* Envelope.
+* Cor dourada.
+
+### Placeholder
+
+```text
+Digite seu e-mail
+```
+
+### Label da senha
+
+Texto:
+
+```text
+Senha
+```
+
+Ícone:
+
+* Lock.
+* Cor dourada.
+
+### Placeholder
+
+```text
+Digite sua senha
+```
+
+### Input CSS
+
+```css
+height: 56px;
+border-radius: 14px;
+background: #0C171C;
+border: 1px solid rgba(224, 173, 76, 0.28);
+color: #FFFFFF;
+padding: 0 18px;
+font-size: 15px;
+outline: none;
+```
+
+Focus:
+
+```css
+border-color: rgba(247, 201, 101, 0.75);
+box-shadow: 0 0 0 3px rgba(224, 173, 76, 0.12);
+```
+
+Placeholder:
+
+```css
+color: rgba(217, 217, 217, 0.45);
+```
+
+---
+
+## 6.8 Checkbox e link
+
+Linha abaixo do campo senha:
+
+Esquerda:
+
+```text
+Lembrar de mim
+```
+
+Direita:
+
+```text
+Esqueci minha senha
+```
+
+Checkbox:
+
+* Quadrado pequeno.
+* Fundo dourado quando marcado.
+* Check em preto ou azul muito escuro.
+
+Link:
+
+```css
+color: #E0AD4C;
+text-decoration: underline;
+text-underline-offset: 4px;
+```
+
+---
+
+## 6.9 Botão principal
+
+Texto:
+
+```text
+Entrar no painel
+```
+
+Características:
+
+* Dourado.
+* Gradiente vertical.
+* Alto contraste.
+* Ícone de escudo à esquerda.
+* Seta à direita.
+* Altura 60px.
+* Arredondamento 14px.
+* Sombra dourada suave.
+
+CSS:
+
+```css
+height: 60px;
+border-radius: 14px;
+background: linear-gradient(180deg, #F7C965 0%, #E0AD4C 48%, #D49733 100%);
+color: #081114;
+font-weight: 700;
+box-shadow:
+  0 12px 30px rgba(224, 173, 76, 0.24),
+  inset 0 1px 0 rgba(255, 255, 255, 0.35);
+```
+
+Hover:
+
+```css
+filter: brightness(1.06);
+transform: translateY(-1px);
+box-shadow:
+  0 16px 36px rgba(224, 173, 76, 0.32),
+  inset 0 1px 0 rgba(255, 255, 255, 0.42);
+```
+
+---
+
+## 6.10 Rodapé do card
+
+Separador com ícone de cadeado.
+
+Texto:
+
+```text
+Não possui uma conta?
+```
+
+Link:
+
+```text
+Solicitar acesso
+```
+
+CSS do link:
+
+```css
+color: #E0AD4C;
+font-weight: 600;
+```
+
+---
+
+# 7. Bloco PARLEGIS e PADCON
+
+Abaixo do card, na coluna direita.
+
+Texto:
+
+```text
+PARLEGIS®
+LEGISLATIVE INTELLIGENCE SYSTEM
+
+PADCON PLATFORM®
+ADVANCED SYSTEMS ARCHITECTURE
+```
+
+Características:
+
+* Centralizado ou alinhado ao centro da coluna direita.
+* Letras espaçadas.
+* Dourado para o nome.
+* Branco/cinza para subtítulo.
+* Pequeno, elegante e institucional.
+
+CSS:
+
+```css
+.company-title {
+  font-family: "Cinzel", serif;
+  letter-spacing: 0.24em;
+  color: #E0AD4C;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.company-subtitle {
+  letter-spacing: 0.18em;
+  color: rgba(217, 217, 217, 0.8);
+  font-size: 10px;
+}
+```
+
+---
+
+# 8. Indicadores de status
+
+À direita do bloco PARLEGIS/PADCON, colocar:
+
+```text
+ACESSO RESTRITO
+ENTRADA SEGURA
+```
+
+Com bolinhas luminosas:
+
+* Acesso restrito: âmbar/dourado.
+* Entrada segura: verde.
+
+CSS bolinha âmbar:
+
+```css
+background: #F7C965;
+box-shadow: 0 0 18px rgba(247, 201, 101, 0.7);
+```
+
+CSS bolinha verde:
+
+```css
+background: #44D26F;
+box-shadow: 0 0 18px rgba(68, 210, 111, 0.7);
+```
+
+---
+
+# 9. Barra inferior de segurança
+
+Na parte inferior da página, criar uma faixa horizontal com 6 itens.
+
+Itens:
+
+1. **LGPD**
+   Proteção de Dados
+
+2. **ICP-BRASIL**
+   Certificação Digital
+
+3. **2FA**
+   Dois Fatores
+
+4. **JWT**
+   Token de Sessão
+
+5. **AUDITORIA**
+   Trilha de Acessos
+
+6. **MTLS**
+   Conexão Criptografada
+
+Características:
+
+* Fundo escuro.
+* Cards pequenos.
+* Bordas douradas.
+* Ícones dourados.
+* Texto principal dourado.
+* Texto secundário cinza claro.
+* Altura aproximada: 86px.
+* Arredondamento: 16px.
+* Ficar fixado visualmente na parte inferior, mas pode estar dentro do fluxo da página.
+
+CSS do container:
+
+```css
+border-top: 1px solid rgba(224, 173, 76, 0.18);
+padding: 20px 56px 28px;
+```
+
+CSS dos cards:
+
+```css
+border: 1px solid rgba(224, 173, 76, 0.25);
+background: rgba(9, 22, 28, 0.72);
+border-radius: 16px;
+padding: 14px 18px;
+display: flex;
+align-items: center;
+gap: 14px;
+```
+
+---
+
+# 10. Código base sugerido
+
+Criar arquivo:
+
+```text
+src/pages/LoginPage.tsx
+```
+
+Ou, se estiver usando App Router:
+
+```text
+src/app/login/page.tsx
+```
+
+Código sugerido:
+
+```tsx
+import {
+  ShieldCheck,
+  Mail,
+  Lock,
+  Eye,
+  ArrowRight,
+  KeyRound,
+  ClipboardCheck,
+  BadgeCheck,
+  FileCheck2,
+} from "lucide-react";
+
+type SecurityItem = {
+  title: string;
+  subtitle: string;
+  icon: React.ElementType;
+};
+
+const securityItems: SecurityItem[] = [
+  { title: "LGPD", subtitle: "Proteção de Dados", icon: ShieldCheck },
+  { title: "ICP-BRASIL", subtitle: "Certificação Digital", icon: BadgeCheck },
+  { title: "2FA", subtitle: "Dois Fatores", icon: ShieldCheck },
+  { title: "JWT", subtitle: "Token de Sessão", icon: KeyRound },
+  { title: "AUDITORIA", subtitle: "Trilha de Acessos", icon: ClipboardCheck },
+  { title: "MTLS", subtitle: "Conexão Criptografada", icon: Lock },
+];
+
+export default function LoginPage() {
+  return (
+    <main className="relative min-h-screen overflow-hidden bg-[#0B1417] text-white">
+      <BackgroundEffects />
+
+      <section className="relative z-10 mx-auto grid min-h-[calc(100vh-120px)] max-w-[1440px] grid-cols-[1.08fr_0.92fr] items-center gap-12 px-14 py-10">
+        <BrandPanel />
+        <LoginArea />
+      </section>
+
+      <SecurityBar />
+    </main>
+  );
+}
+
+function BackgroundEffects() {
+  return (
+    <>
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_28%_20%,rgba(224,173,76,0.14),transparent_28%),radial-gradient(circle_at_70%_55%,rgba(14,24,32,0.95),transparent_42%),linear-gradient(135deg,#081013_0%,#0B1417_45%,#061014_100%)]" />
+      <div className="pointer-events-none absolute left-0 top-0 h-full w-full bg-[radial-gradient(circle_at_34%_44%,rgba(247,201,101,0.08),transparent_34%)]" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-[118px] h-px bg-gradient-to-r from-transparent via-[#E0AD4C]/30 to-transparent" />
+    </>
+  );
+}
+
+function BrandPanel() {
+  return (
+    <div className="flex flex-col items-center justify-center text-center">
+      <div className="relative">
+        <div className="absolute inset-0 scale-110 rounded-full bg-[#E0AD4C]/10 blur-[80px]" />
+
+        <img
+          src="/assets/cj-monograma-dourado.png"
+          alt="Monograma Cícero João"
+          className="relative z-10 mx-auto w-[min(420px,32vw)] drop-shadow-[0_0_28px_rgba(247,201,101,0.28)]"
+        />
+      </div>
+
+      <h1 className="mt-2 font-['Cormorant_Garamond'] text-[clamp(58px,5.5vw,92px)] font-bold leading-none text-[#E0AD4C] drop-shadow-[0_0_18px_rgba(247,201,101,0.20)]">
+        Cícero João
+      </h1>
+
+      <div className="mt-5 flex items-center justify-center gap-5">
+        <span className="h-px w-20 bg-gradient-to-r from-transparent to-[#E0AD4C]" />
+        <span className="font-['Cinzel'] text-[18px] font-semibold tracking-[0.42em] text-[#F7C965]">
+          VEREADOR
+        </span>
+        <span className="h-px w-20 bg-gradient-to-l from-transparent to-[#E0AD4C]" />
+      </div>
+
+      <div className="relative mt-8 w-full max-w-[720px]">
+        <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-[#0B1417] to-transparent" />
+
+        <img
+          src="/assets/sorocaba-skyline-gold.png"
+          alt="Monumentos de Sorocaba em dourado"
+          className="mx-auto w-full opacity-95 drop-shadow-[0_0_22px_rgba(224,173,76,0.22)]"
+        />
+      </div>
+
+      <p className="mt-7 font-['Cormorant_Garamond'] text-[26px] italic text-[#F7C965] drop-shadow-[0_0_14px_rgba(247,201,101,0.26)]">
+        “Servir com sabedoria. Conduzir com firmeza.”
+      </p>
+
+      <div className="mt-4 h-px w-56 bg-gradient-to-r from-transparent via-[#F7C965] to-transparent shadow-[0_0_20px_rgba(247,201,101,0.65)]" />
+    </div>
+  );
+}
+
+function LoginArea() {
+  return (
+    <div className="flex flex-col items-center justify-center">
+      <LoginCard />
+
+      <div className="mt-8 flex items-center gap-10">
+        <div className="text-center">
+          <CompanyBlock
+            title="PARLEGIS®"
+            subtitle="LEGISLATIVE INTELLIGENCE SYSTEM"
+          />
+
+          <div className="mt-5">
+            <CompanyBlock
+              title="PADCON PLATFORM®"
+              subtitle="ADVANCED SYSTEMS ARCHITECTURE"
+            />
+          </div>
+        </div>
+
+        <div className="h-20 w-px bg-[#E0AD4C]/30" />
+
+        <div className="space-y-5">
+          <StatusLine label="ACESSO RESTRITO" color="amber" />
+          <StatusLine label="ENTRADA SEGURA" color="green" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function LoginCard() {
+  return (
+    <div className="relative w-full max-w-[520px] rounded-[28px] border border-[#E0AD4C]/45 bg-[linear-gradient(180deg,rgba(14,24,32,0.96),rgba(7,16,20,0.96))] px-10 pb-10 pt-12 shadow-[0_28px_80px_rgba(0,0,0,0.55),inset_0_1px_0_rgba(255,255,255,0.05)]">
+      <div className="absolute left-1/2 top-[-29px] flex h-[58px] w-[58px] -translate-x-1/2 items-center justify-center rounded-full border border-[#E0AD4C]/75 bg-[linear-gradient(180deg,#1A2529,#081114)] shadow-[0_0_28px_rgba(224,173,76,0.28)]">
+        <ShieldCheck className="h-7 w-7 text-[#F7C965]" />
+      </div>
+
+      <div className="text-center">
+        <h2 className="font-['Playfair_Display'] text-[46px] font-bold leading-none text-white">
+          Entrar
+        </h2>
+
+        <p className="mt-3 text-[16px] font-medium text-[#E0AD4C]">
+          Acesse o Gabinete Digital do Vereador
+        </p>
+
+        <div className="mx-auto mt-4 h-px w-36 bg-gradient-to-r from-transparent via-[#F7C965] to-transparent shadow-[0_0_18px_rgba(247,201,101,0.48)]" />
+      </div>
+
+      <button className="mt-8 flex h-14 w-full items-center justify-center gap-3 rounded-[12px] border border-[#E0AD4C]/45 bg-[#09161C]/90 text-[15px] font-medium text-white transition hover:border-[#F7C965]/75 hover:bg-[#0E1820] hover:shadow-[0_0_18px_rgba(224,173,76,0.16)]">
+        <span className="text-[22px] font-bold text-[#4285F4]">G</span>
+        Continuar com Google
+      </button>
+
+      <div className="my-7 flex items-center gap-4">
+        <div className="h-px flex-1 bg-[#E0AD4C]/20" />
+        <span className="text-sm text-[#D9D9D9]/60">ou</span>
+        <div className="h-px flex-1 bg-[#E0AD4C]/20" />
+      </div>
+
+      <div className="space-y-5">
+        <InputField
+          label="E-mail"
+          type="email"
+          placeholder="Digite seu e-mail"
+          icon={Mail}
+        />
+
+        <InputField
+          label="Senha"
+          type="password"
+          placeholder="Digite sua senha"
+          icon={Lock}
+          rightIcon={Eye}
+        />
+      </div>
+
+      <div className="mt-5 flex items-center justify-between text-sm">
+        <label className="flex cursor-pointer items-center gap-2 text-[#D9D9D9]">
+          <input
+            type="checkbox"
+            className="h-4 w-4 accent-[#E0AD4C]"
+            defaultChecked
+          />
+          Lembrar de mim
+        </label>
+
+        <a
+          href="#"
+          className="font-medium text-[#E0AD4C] underline underline-offset-4 hover:text-[#F7C965]"
+        >
+          Esqueci minha senha
+        </a>
+      </div>
+
+      <button className="mt-7 flex h-[60px] w-full items-center justify-between rounded-[14px] bg-[linear-gradient(180deg,#F7C965_0%,#E0AD4C_48%,#D49733_100%)] px-7 text-[17px] font-bold text-[#081114] shadow-[0_12px_30px_rgba(224,173,76,0.24),inset_0_1px_0_rgba(255,255,255,0.35)] transition hover:-translate-y-px hover:brightness-105 hover:shadow-[0_16px_36px_rgba(224,173,76,0.32)]">
+        <span className="flex items-center gap-3">
+          <ShieldCheck className="h-5 w-5" />
+          Entrar no painel
+        </span>
+
+        <ArrowRight className="h-5 w-5" />
+      </button>
+
+      <div className="my-7 flex items-center gap-4">
+        <div className="h-px flex-1 bg-[#E0AD4C]/18" />
+        <Lock className="h-4 w-4 text-[#E0AD4C]/80" />
+        <div className="h-px flex-1 bg-[#E0AD4C]/18" />
+      </div>
+
+      <div className="flex items-center justify-center gap-3 text-sm text-[#D9D9D9]/75">
+        <span>Não possui uma conta?</span>
+
+        <a
+          href="#"
+          className="flex items-center gap-2 font-semibold text-[#E0AD4C] hover:text-[#F7C965]"
+        >
+          Solicitar acesso
+          <ArrowRight className="h-4 w-4" />
+        </a>
+      </div>
+    </div>
+  );
+}
+
+type InputFieldProps = {
+  label: string;
+  type: string;
+  placeholder: string;
+  icon: React.ElementType;
+  rightIcon?: React.ElementType;
+};
+
+function InputField({
+  label,
+  type,
+  placeholder,
+  icon: Icon,
+  rightIcon: RightIcon,
+}: InputFieldProps) {
+  return (
+    <label className="block">
+      <span className="mb-2 flex items-center gap-2 text-sm font-medium text-[#D9D9D9]">
+        <Icon className="h-4 w-4 text-[#E0AD4C]" />
+        {label}
+      </span>
+
+      <div className="relative">
+        <input
+          type={type}
+          placeholder={placeholder}
+          className="h-14 w-full rounded-[14px] border border-[#E0AD4C]/30 bg-[#0C171C] px-5 pr-12 text-[15px] text-white outline-none transition placeholder:text-[#D9D9D9]/40 focus:border-[#F7C965]/75 focus:shadow-[0_0_0_3px_rgba(224,173,76,0.12)]"
+        />
+
+        {RightIcon && (
+          <RightIcon className="absolute right-4 top-1/2 h-5 w-5 -translate-y-1/2 text-[#D9D9D9]/70" />
+        )}
+      </div>
+    </label>
+  );
+}
+
+function CompanyBlock({
+  title,
+  subtitle,
+}: {
+  title: string;
+  subtitle: string;
+}) {
+  return (
+    <div>
+      <p className="font-['Cinzel'] text-[15px] font-semibold tracking-[0.24em] text-[#E0AD4C]">
+        {title}
+      </p>
+
+      <p className="mt-1 text-[10px] font-semibold tracking-[0.18em] text-[#D9D9D9]/80">
+        {subtitle}
+      </p>
+    </div>
+  );
+}
+
+function StatusLine({
+  label,
+  color,
+}: {
+  label: string;
+  color: "amber" | "green";
+}) {
+  const dotClass =
+    color === "green"
+      ? "bg-[#44D26F] shadow-[0_0_18px_rgba(68,210,111,0.70)]"
+      : "bg-[#F7C965] shadow-[0_0_18px_rgba(247,201,101,0.70)]";
+
+  return (
+    <div className="flex items-center justify-between gap-5">
+      <span className="text-[12px] font-semibold tracking-[0.32em] text-[#D9D9D9]/85">
+        {label}
+      </span>
+
+      <span className={`h-3 w-3 rounded-full ${dotClass}`} />
+    </div>
+  );
+}
+
+function SecurityBar() {
+  return (
+    <footer className="relative z-10 border-t border-[#E0AD4C]/18 px-14 pb-7 pt-5">
+      <div className="mx-auto grid max-w-[1280px] grid-cols-6 gap-4">
+        {securityItems.map((item) => {
+          const Icon = item.icon;
+
+          return (
+            <div
+              key={item.title}
+              className="flex items-center gap-4 rounded-[16px] border border-[#E0AD4C]/25 bg-[#09161C]/70 px-4 py-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]"
+            >
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[12px] border border-[#E0AD4C]/35 text-[#F7C965]">
+                <Icon className="h-5 w-5" />
+              </div>
+
+              <div>
+                <p className="text-[13px] font-bold tracking-[0.18em] text-[#F7C965]">
+                  {item.title}
+                </p>
+
+                <p className="mt-1 text-[11px] text-[#D9D9D9]/70">
+                  {item.subtitle}
+                </p>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      <p className="mt-5 text-center text-xs text-[#D9D9D9]/55">
+        © 2026 Gabinete Digital Cícero João. Todos os direitos reservados.
+      </p>
+    </footer>
+  );
+}
+```
+
+---
+
+# 11. Assets necessários
+
+Colocar os arquivos dentro de:
+
+```text
+/public/assets/
+```
+
+Arquivos desejados:
+
+```text
+cj-monograma-dourado.png
+sorocaba-skyline-gold.png
+```
+
+## Descrição do arquivo `cj-monograma-dourado.png`
+
+Deve ser:
+
+* PNG com fundo transparente.
+* Monograma CJ.
+* Pomba integrada ao J.
+* Dourado 3D.
+* Metal escovado.
+* Alta resolução.
+* Recomenda-se no mínimo 1200px de largura.
+
+## Descrição do arquivo `sorocaba-skyline-gold.png`
+
+Deve ser:
+
+* PNG com fundo transparente.
+* Skyline/monumento de Sorocaba.
+* Dourado escovado.
+* Estilo relevo arquitetônico.
+* Pode conter ponte, prédio público, torre, prédios e composição urbana.
+* Recomenda-se no mínimo 1800px de largura.
+
+---
+
+# 12. Responsividade
+
+## Desktop
+
+Manter duas colunas:
+
+```css
+grid-template-columns: 1.08fr 0.92fr;
+```
+
+## Tablet
+
+Reduzir espaçamentos:
+
+```css
+padding: 32px;
+gap: 32px;
+```
+
+## Mobile
+
+Empilhar:
+
+1. Logo.
+2. Nome.
+3. Frase.
+4. Card de login.
+5. Rodapé de segurança.
+
+No mobile, ocultar ou reduzir o skyline se ficar pesado.
+
+Tailwind sugerido:
+
+```tsx
+<section className="grid grid-cols-1 lg:grid-cols-[1.08fr_0.92fr]">
+```
+
+SecurityBar no mobile:
+
+```tsx
+<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6">
+```
+
+---
+
+# 13. Detalhes importantes de acabamento
+
+## Evitar
+
+* Fundo branco.
+* Botão Google branco padrão.
+* Azul muito vivo.
+* Dourado neon exagerado.
+* Elementos desalinhados.
+* Card pequeno demais.
+* Ícones grandes demais.
+* Fonte sem personalidade.
+* Layout com aparência genérica de template.
+
+## Priorizar
+
+* Dourado escovado.
+* Sombra suave.
+* Bordas finas.
+* Alto contraste.
+* Espaçamento generoso.
+* Hierarquia visual.
+* Visual institucional.
+* Aparência de sistema seguro.
+* Estilo premium.
+
+---
+
+# 14. Resumo visual final esperado
+
+A tela deve parecer assim:
+
+* Fundo preto/azul petróleo.
+* Monograma CJ dourado grande no lado esquerdo.
+* Nome Cícero João em dourado serifado.
+* VEREADOR com letras espaçadas.
+* Skyline de Sorocaba em dourado escovado.
+* Frase institucional em dourado claro.
+* Card de login à direita, escuro, com borda dourada.
+* Botão Google escuro e elegante.
+* Inputs refinados.
+* Botão principal dourado.
+* Bloco PARLEGIS e PADCON abaixo.
+* Indicadores de acesso restrito e entrada segura.
+* Rodapé com LGPD, ICP-BRASIL, 2FA, JWT, AUDITORIA e MTLS.
+
+O resultado deve ser uma tela de login premium, institucional e tecnológica, compatível com um sistema político moderno de relacionamento com eleitores, demandas, prestação de contas e acompanhamento legislativo.
