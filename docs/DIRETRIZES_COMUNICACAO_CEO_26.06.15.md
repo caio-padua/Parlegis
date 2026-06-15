@@ -1,7 +1,7 @@
 # DIRETRIZES DE COMUNICACAO COM O CEO DR. CAIO
 
 Versao: 26.06.15 (15/06/2026)
-Repositorio: Attached-Assets (produto interno: Gabinete Digital Cicero Joao)
+Repositorio: gabinete-digital (produto: Gabinete Digital Cicero Joao)
 Agente responsavel neste repo: Dr. Replit Parlegis
 
 Fonte de verdade (raw GitHub):
